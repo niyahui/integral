@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+    <script type="text/javascript" th:src="@{/js/echarts.min.js}"></script>
+</head>
+<body>
+    <div id="myDiv">
+        <!--时间区间-->
+        创建时间:<input type="date" id="mindate">~<input type="date" id="maxdate">
+        <button class="btn btn-info" onclick="chaxun()">查询</button>
+    </div>
+    <table id="mytab" class="table table-hover" ></table>
+
+    <button onclick="hui()">返回</button>
+</body>
+<script type="text/javascript">
+    function hui() {
+        location.href="workeLog.html";
+    }
+    //页面加载方法
+    $(function(){
+        mytab();
+    })
+    function chaxun() {
+        $('#mytab').bootstrapTable("refresh");
+    }
+    //查询我的日志列表
+    function mytab(){
+        $('#mytab').bootstrapTable({
+            method : 'get',
+            url : "getMyWorkLogList",
+            columns : [
+                {title : '编号',field : 'number',sortable : true},
+                {title : '日期',field : 'sumdate',sortable : true},
+                {title : '工作日志',field : 'summary',sortable : true},
+                {title : '工作计划',field : 'plan',sortable : true},
+                /*{title : '操作',field : 'cao',formatter:function(value,row){
+                        var ser="";
+                        ser+="<button  class='btn btn-success' onclick='del("+row.limitentry_id+")'>删除</button>" ;
+                        return ser;
+                    }},*/
+            ],
+            myDiv:'#myDiv',//工具栏
+            pagination:true,
+            pageSize:4,
+            pageList: [2,4,6],
+            sidePagination: "client",//前台开启分页
+            queryParams:function(){
+                return {
+                    page:this.pageNumber,//第几页
+                    rows:this.pageSize,//每页条数
+                    mindate:$("#mindate").val(),//时间条件查询
+                    maxdate:$("#maxdate").val(),//时间条件查询
+                };
+            }
+        })
+    }
+</script>
+</html>

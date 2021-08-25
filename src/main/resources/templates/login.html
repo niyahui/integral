@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="../static/js/index.js"></script>
+</head>
+
+<script type="text/javascript" th:src="@{/jss/jquery-2.1.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/jss/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/jss/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+<script type="text/javascript" th:src="@{/jss/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/jss/bootstrap-treeview/bootstrap-treeview.min.css}">
+<script type="text/javascript" th:src="@{/jss/bootStrap-addTabs/bootstrap.addtabs.min.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/jss/bootStrap-addTabs/bootstrap.addtabs.css}">
+<script type="text/javascript" th:src="@{/jss/bootstrap-table/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/jss/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/jss/bootstrap-table/bootstrap-table.min.css}">
+
+<script type="text/javascript" th:src="@{/jss/bootstrap-fileinput/js/fileinput.min.js}"></script>
+<script th:src="@{/jss/bootstrap-fileinput/js/locales/zh.js}"></script>
+
+
+<!--登录样式 -->
+<link type="text/css" rel="stylesheet" th:href="@{/jss/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link type="text/css" rel="stylesheet" th:href="@{/jss/css/style.css}">
+<script  type="text/javascript" th:src="@{jss/index.js}"></script>
+<body>
+<form id="myForm">
+  <div class="materialContainer">
+    <div class="box">
+      <div class="title">登录</div>
+      <div class="input">
+        <label for="name">用户名</label>
+        <input type="text" name="user_num" id="name">
+        <span class="spin"></span>
+      </div>
+      <div class="input">
+        <label for="pass">密码</label>
+        <input type="password" name="user_password" id="pass">
+        <span class="spin"></span>
+      </div>
+      <div class="button login">
+        <button type="button" onclick="login()">
+          <span>登录</span>
+          <i class="fa fa-check"></i>
+        </button>
+      </div><br>
+      <a href="javascript:" class="pass-forgot">忘记密码？</a>
+    </div>
+    <div class="overbox">
+      <div class="material-button alt-2">
+        <span class="shape"></span>
+      </div>
+    </div>
+  </div>
+</form>
+</body>
+<script type="text/javascript">
+
+  function login(){
+    $.ajax({
+      url:"login",
+      type:"post",
+      data:$("#myForm").serialize(),
+      success:function(data){
+
+        alert(data.message)
+        if(data.code==200){
+          location.href="index.html"
+        }
+      }
+    })
+  }
+
+
+  function shuaxin(){
+    $("#img").prop("src","<%=request.getContextPath()%>/login/code.do?"+new Date().getTime());
+  }
+
+</script>
+</html>

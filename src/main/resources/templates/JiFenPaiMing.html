@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+<script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+<script type="text/javascript" th:src="@{/js/echarts.min.js}"></script>
+<body>
+<div class="row">
+    <div class="col-md-3">
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-trophy"></i>&nbsp;特别表彰
+                </div>
+            </div>
+            <div>
+                <font>总榜第一:</font><br>
+                <span id="zongname"></span>
+            </div>
+            <div>
+                <font>月榜第一:</font><br>
+                <span id="yuename"></span>
+            </div>
+            <div>
+                <font>今天第一:</font><br>
+                <span id="jinname"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row" id="topList">
+            <div class="col-md-4">
+                <div class="pricing pricing-green hover-effect" date="today">
+                    <div class="pricing-head">
+                        <h3><div class="pull-left FTitle">今日得分榜</div>&nbsp;<block class="details pull-right" style="cursor: pointer;" date="today"><i class="fa fa-list-ol"></i>&nbsp;&nbsp;</block></h3>
+                    </div>
+                    <table id="jin"></table>
+                    <a href="zong.html">查看完整榜单</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing pricing-green hover-effect" date="currMonth">
+                    <div class="pricing-head">
+                        <h3><div class="pull-left FTitle">本月得分榜</div>&nbsp;<block class="details pull-right" style="cursor: pointer;" date="currMonth"><i class="fa fa-list-ol"></i>&nbsp;&nbsp;</block></h3>
+                    </div>
+                    <table id="yue"></table>
+                    <a href="yue.html">查看完整榜单</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing pricing-green hover-effect">
+                    <div class="pricing-head">
+                        <h3><div class="pull-left FTitle">总积分榜</div>&nbsp;<block class="details pull-right" style="cursor: pointer;"><i class="fa fa-list-ol"></i>&nbsp;&nbsp;</block></h3>
+                    </div>
+                    <table id="zong"></table>
+                    <a href="zong.html">查看完整榜单</a>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="endList" style="">
+            <div class="col-md-4">
+                <div class="pricing pricing-black hover-effect" date="today">
+                    <div class="pricing-head">
+                        <h3><div class="pull-left FTitle">今日末位</div>&nbsp;<block class="details pull-right" style="cursor: pointer;" date="today"><i class="fa fa-list-ol"></i>&nbsp;&nbsp;</block></h3>
+                    </div>
+                    <table id="jinmo"></table>
+                    <a href="jinmo.html">查看完整榜单</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing pricing-black hover-effect" date="currMonth">
+                    <div class="pricing-head">
+                        <h3><div class="pull-left FTitle">本月末位</div>&nbsp;<block class="details pull-right" style="cursor: pointer;" date="currMonth"><i class="fa fa-list-ol"></i>&nbsp;&nbsp;</block></h3>
+                    </div>
+                    <table id="yuemo"></table>
+                    <a href="yuemo.html">查看完整榜单</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing pricing-black hover-effect">
+                    <div class="pricing-head">
+                        <h3><div class="pull-left FTitle">总积分末位</div>&nbsp;<block class="details pull-right" style="cursor: pointer;"><i class="fa fa-list-ol"></i>&nbsp;&nbsp;</block></h3>
+                    </div>
+                    <table id="zongmo"></table>
+                    <a href="zongmo.html">查看完整榜单</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $("#zong").bootstrapTable({
+        url:"../zong",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名"},
+            {field:"zongjifen",title:"总积分"},
+        ],
+        striped:true,//斑马线
+    })
+    $("#zongmo").bootstrapTable({
+        url:"../zongmo",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名"},
+            {field:"zongjifen",title:"总积分"},
+        ],
+        striped:true,//斑马线
+    })
+    $("#yue").bootstrapTable({
+        url:"../yue",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名"},
+            {field:"zongjifen",title:"总积分"},
+        ],
+        striped:true,//斑马线
+    })
+    $("#yuemo").bootstrapTable({
+        url:"../yuemo",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名"},
+            {field:"zongjifen",title:"总积分"},
+        ],
+        striped:true,//斑马线
+    })
+    $("#jin").bootstrapTable({
+        url:"../jin",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名"},
+            {field:"zongjifen",title:"总积分"},
+        ],
+        striped:true,//斑马线
+    })
+    $("#jinmo").bootstrapTable({
+        url:"../jinmo",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名"},
+            {field:"zongjifen",title:"总积分"},
+        ],
+        striped:true,//斑马线
+    })
+    $(function () {
+        zongname();//初始化加载树
+        yuename();//初始化加载树
+        jinname();//初始化加载树
+    })
+
+    function zongname(){
+        $.ajax({
+            type:"get",
+            url:"../zongname",
+            async:true,
+            data:"",
+            success:function(res){
+                $("#zongname").html("<span color='black' size='5px'>"+res.mingzi+"</span>");
+            }
+        });
+    }
+    function yuename(){
+        $.ajax({
+            type:"get",
+            url:"../yuename",
+            async:true,
+            data:"",
+            success:function(res){
+                $("#yuename").html("<span color='black' size='5px'>"+res.mingzi+"</span>");
+            }
+        });
+    }
+    function jinname(){
+        $.ajax({
+            type:"get",
+            url:"../jinname",
+            async:true,
+            data:"",
+            success:function(res){
+                $("#jinname").html("<span color='black' size='5px'>"+res.mingzi+"</span>");
+            }
+        });
+    }
+
+
+
+
+
+
+</script>
+</html>

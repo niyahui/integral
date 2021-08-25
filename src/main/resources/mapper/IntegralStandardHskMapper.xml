@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.integral.dao.IntegralStandardHskDao">
+    <!--积分标准 查询 没有暂停使用-->
+    <select id="getIntegralSettingStandardList" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_standard_hsk` a1, integral_type_hsk a2 where a1.integralType=a2.typeId and a1.integralState=0
+
+        <include refid="tc"></include>
+    </select>
+    <!--检索-->
+    <sql id="tc">
+        <if test="integralHead != null and integralHead !='' ">
+            and integralId like '%${integralHead}%' or integralHead like '%${integralHead}%' or integralGrade like '%${integralHead}%' or integralRemark like '%${integralHead}%' or integralVisualRange like '%${integralHead}%' or integralFrequency like '%${integralHead}%' or integralAuditor like '%${integralHead}%'
+        </if>
+    </sql>
+    <!--类别动态查询-->
+    <select id="getType" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_type_hsk` ORDER BY typeId DESC
+    </select>
+    <!--新增积分标准-->
+    <insert id="addIntegralStandardHsk">
+        insert into integral_standard_hsk (integralId,integralType,integralHead,integralGrade,integralRemark,integralVisualRange,integralFrequency,integralAuditor,integralState) values (0,#{integralType},#{integralHead},#{integralGrade},#{integralRemark},#{integralVisualRange},#{integralFrequency},#{integralAuditor},0)
+    </insert>
+    <!--积分标准删除-->
+    <delete id="delIntegralSettingStandard">
+        delete from integral_standard_hsk where integralId=#{0}
+    </delete>
+    <!--积分标准回显-->
+    <select id="getIntegralSettingStandardHui" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_standard_hsk` where integralId=#{0}
+    </select>
+    <update id="updateIntegralSettingStandard">
+        update integral_standard_hsk set integralType=#{integralType},integralHead=#{integralHead},integralGrade=#{integralGrade},integralRemark=#{integralRemark},integralVisualRange=#{integralVisualRange},integralAuditor=#{integralAuditor} where integralId=#{integralId}
+    </update>
+    <!--查询需要导出得数据-->
+    <select id="query" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_standard_hsk`
+    </select>
+    <!--批量修改类别-->
+    <update id="updateAll">
+        update integral_standard_hsk set integralType =#{addid} where integralId=#{id}
+    </update>
+    <!--暂停-->
+    <update id="suspendIntegralSettingStandard">
+        update integral_standard_hsk set integralState =1 where integralId=#{id}
+    </update>
+<!--
+    /*/////积分类别管理//////////////////////////积分类别管理//////////////////////积分类别管理////////////////////////////////////////*/
+-->
+    <!--积分类别管理-查询-->
+    <select id="getclassificationOfIntegralStandardList" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_type_hsk` where typeId !=99
+        <include refid="tc1"></include>
+    </select>
+    <sql id="tc1">
+        <if test="typeType != null and typeType != '' ">
+            and typeType like '%${typeType}%'
+        </if>
+    </sql>
+    <!--积分类别管理-增加-修改-->
+    <insert id="addclassificationOfIntegralStandard">
+        insert into integral_type_hsk (typeId,typeType) values (0,#{typeType})
+    </insert>
+    <!--积分类别管理-回显-->
+    <select id="gettypeTypeId" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_type_hsk` where typeId =#{0}
+    </select>
+    <!--积分类别管理-修改-->
+    <update id="updateClassificationOfIntegralStandard">
+        update integral_type_hsk set typeType=#{typeType} where typeId=#{typeId}
+    </update>
+    <!--积分类别管理-删除-->
+    <delete id="deltypeType">
+        delete from integral_type_hsk where typeId=#{0}
+    </delete>
+    <!--/*已暂停的标准-查询*/-->
+    <select id="getSuspendedStandardsList" resultType="com.jk.integral.entity.IntegralStandardHskEntity">
+        SELECT * FROM `integral_standard_hsk` a1, integral_type_hsk a2 where a1.integralType=a2.typeId and a1.integralState=1
+
+        <include refid="tc3"></include>
+    </select>
+    <sql id="tc3">
+        <if test="integralHead != null and integralHead !='' ">
+            and integralId like '%${integralHead}%' or integralHead like '%${integralHead}%' or integralGrade like '%${integralHead}%' or integralRemark like '%${integralHead}%' or integralVisualRange like '%${integralHead}%' or integralFrequency like '%${integralHead}%' or integralAuditor like '%${integralHead}%'
+        </if>
+    </sql>
+    <!--/*已暂停的标准-恢复*/-->
+    <update id="recovery">
+        update integral_standard_hsk set integralState =0 where integralId=#{id}
+    </update>
+</mapper>

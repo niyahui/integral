@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.integral.DaoHHC.JiFenDao">
+
+
+
+
+<!--查询个人已经领取的任务-->
+<select id="LinquRwuGet" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+ select * from scorecard_jif_hhc <include refid="sql"></include>
+</select>
+
+<sql id="sql">
+ <where>
+  use_id=#{user_id}
+   <if test="t.headline!=null and  t.headline!=''">
+    and headline like %${t.headline}%
+   </if>
+
+  <if test="t.state!=null and  t.state!=''">
+   and state=#{t.state}
+  </if>
+
+ </where>
+</sql>
+
+
+
+ <!--未领取任务查询-->
+ <select id="weiLinquRwuGet" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select * from scorecard_jif_hhc where use_id=9999
+ </select>
+
+
+ <!--未领取任务查询回显-->
+ <select id="weiLinquRwuHuixian" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select * from scorecard_jif_hhc  where  linqu_id=#{linqu_id}
+ </select>
+
+ <update id="linqurw">
+  update scorecard_jif_hhc set
+  use_id=#{use_id}
+  where  linqu_id=#{linqu_id}
+ </update>
+
+
+ <update id="tonzUser">
+  update scorecard_jif_hhc set
+  state=2
+  where  linqu_id=#{linqu_id}
+ </update>
+
+
+
+ <!--、、、、、、、、、、、、、、、、、、、、、、、、、、、、今日积分查询、、、、、、、、、、、、、、、、、、-->
+
+ <!--今日积分查询-->
+ <select id="jinrJiFen" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select * from jinrijifenhhc where to_days(shenghDate) = to_days(now())
+ </select>
+
+
+ <!--今日总加积分查询-->
+ <select id="jinrJiFenzonJiaf" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select count(a.id) as number,
+  SUM(a.jifenNumber) as zonjifenNumae,
+  AVG(a.jifenNumber) as pjjif,
+  a.bumeng as bm
+  from jinrijifenhhc a where   a.jifenNumber &gt; 0 and
+  to_days(a.shenghDate) = to_days(now())
+  GROUP BY a.bumeng
+ </select>
+
+
+
+
+ <!--今日总减积分查询-->
+ <select id="jianrJiFenzonJiaf" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select count(a.id) as number2,
+  SUM(a.jifenNumber) as zonjifenNumae2,
+  AVG(a.jifenNumber) as pjjif2,
+  a.bumeng as bm2
+  from jinrijifenhhc a where   a.jifenNumber &lt; 0 and
+  to_days(a.shenghDate) = to_days(now())
+  GROUP BY a.bumeng
+ </select>
+
+
+
+
+ <!--昨天总加积分查询-->
+ <select id="ztJiFenzonJiaf" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select count(a.id) as number,
+  SUM(a.jifenNumber) as zonjifenNumae,
+  AVG(a.jifenNumber) as pjjif,
+  a.bumeng as bm
+  from jinrijifenhhc a where   a.jifenNumber &gt; 0 and
+  TO_DAYS( NOW( ) ) - TO_DAYS(shenghDate) =1
+  GROUP BY a.bumeng
+ </select>
+
+
+
+ <!--昨天总减积分查询-->
+ <select id="ztjianJiFenzonJiaf" resultType="com.jk.integral.EntityHHC.JiFenEntity">
+  select count(a.id) as number2,
+  SUM(a.jifenNumber) as zonjifenNumae2,
+  AVG(a.jifenNumber) as pjjif2,
+  a.bumeng as bm2
+  from jinrijifenhhc a where   a.jifenNumber &lt; 0 and
+  TO_DAYS( NOW( ) ) - TO_DAYS(shenghDate) =1
+  GROUP BY a.bumeng
+ </select>
+
+
+
+</mapper>

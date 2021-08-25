@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>积分审核</title>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+    <!--弹窗css-->
+    <link href="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.js"></script>
+</head>
+<body>
+<div id="myTable"></div>
+<div id="tb">
+    <input  class="form-control" id="mz" placeholder="检索"/>
+    <input class='btn btn-default' type='button' onclick='sousuo()' value='查询'>
+
+    <button type="button" class="btn btn-primary" onclick="ViewAllPointsCriteria()">查看全部积分标准</button>
+    <button type="button" class="btn btn-primary" onclick="AllPassed()">全部通过</button>
+</div>
+<p id="demo"></p>
+<!--不通过弹窗-->
+<!-- 修改 -->
+<div class="modal fade" id="editLayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+
+                <h4 class="modal-title">修改记录</h4>
+
+            </div>
+            <!--===================================================================================  -->
+            <div class="modal-body">
+                <form id="myForm1" class="form-horizontal">
+                    <input type="hidden" id="integralReqId" class="form-control" name="integralReqId"> <br>
+                    不通过理由<textarea name="integraReasonsForFailure"></textarea>
+
+                </form>
+            </div>
+            <!--===================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="update()">确认</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    /*<!--列表查询-->*/
+    $("#myTable").bootstrapTable({
+        url:"../getPointsAudit_HskList",
+        columns:[
+            {field:"xuan",checkbox:true},
+            {field:"integralReqId",title:"编号"},
+            {field:"integraPrizeBuckObject",title:"奖扣对象"},
+            {field:"integraDepartment",title:"所在部门"},
+            {field:"integraApplyForPersonne",title:"申请人员"},
+            {field:"integralGrade",title:"申请分数"},
+            {field:"integraDateTime",title:"申请时间"},
+            {field:"integraDocumentNumber",title:"单据号"},
+            {field:"integralHead",title:"申请内容"},
+            {field:"cxz",title:"操作",formatter:function(value,row){
+
+                    var str1='<button class="btn btn-info" onclick="adopt('+row.integralReqId+')">通过</button>';
+                    var str2='<button class="btn btn-success"  data-toggle="modal" data-target="#editLayer" onclick="no('+row.integralReqId+')">不通过</button>';
+                    return str1+"   "+str2;
+    }},
+    ],
+    pagination:true,
+        pageSize:5,
+        pageList:[1,3,5,7,9],
+        sidePagination: "client",
+        toolbar:"#tb",
+    })
+    /*查看全部积分标准*/
+    function ViewAllPointsCriteria(){
+        location.href="https://hi.xiaov100.com/templates/common/item.html";
+    }
+    /*通过*/
+    function adopt(id){
+        $.ajax({
+            url:"../adopt",
+            data:{id:id},
+            success:function (){
+                toastr.success("成功了");
+                $("#myTable").bootstrapTable("refresh");//刷新表格
+            },
+            error:function (){
+                toastr.success("成功了");
+                $("#myTable").bootstrapTable("refresh");//刷新表格
+            }
+        })
+
+    }
+    /*不通过 integralReqId*/
+    function no(id){
+        $("#integralReqId").val(id)
+
+    }
+    function update(){
+        $.ajax({
+            url:"../no",
+            type:"post",
+            data:$("#myForm1").serialize(),
+            dataType:"json",
+            success:function(){
+                toastr.success("成功了");
+                $('#myTable').bootstrapTable('refresh');//刷新表格
+                $("#editLayer").modal('hide');
+            },error:function(){
+                toastr.success("成功了");
+                $("#myTable").bootstrapTable('refresh');
+                $("#editLayer").modal('hide'); //关闭弹窗
+            }
+        })
+    }
+    /*全部通过*/
+    function AllPassed(){
+        var r=confirm("是否确认全部通过?");
+        if (r==true){
+            $.ajax({
+                url:"../AllPassed",
+                success:function(){
+                    toastr.success("全部通过成功了");
+                    $("#myTable").bootstrapTable('refresh');
+                },
+                error:function (){
+                    toastr.success("全部通过成功了");
+                    $("#myTable").bootstrapTable('refresh');
+                }
+            })
+        }
+        else{
+            toastr.success("取消成功了");
+        }
+        document.getElementById("demo").innerHTML=x;
+
+    }
+    /*调查*/
+    function sousuo(){
+        $("#myTable").bootstrapTable("refresh", {
+            "query": {
+                integraReasonsForFailure: $("#mz").val(),
+            }
+        });
+    }
+</script>

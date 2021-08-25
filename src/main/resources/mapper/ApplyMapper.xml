@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.integral.dao.ApplyDao">
+    <select id="apply" resultType="com.jk.integral.entity.ApplyEntity_nyh">
+        select * from apply_shenqing_nyh
+    </select>
+    <select id="apply1" resultType="com.jk.integral.entity.ApplyEntity_nyh">
+        select * from apply_shenqing_nyh where apply_leibie=#{id}
+    </select>
+
+    <select id="leibie" resultType="com.jk.integral.entity.ApplyEntity_nyh">
+        select * from leibie_nyh where pid=#{pid}
+    </select>
+    <!--申请-->
+    <insert id="applyadd">
+        INSERT  apply_shenqing_nyh VALUES(0,#{apply_document},#{apply_headline},#{apply_integral},#{apply_jiangkou},#{apply_auditor},#{apply_state},#{apply_neirong},#{apply_leibie},#{apply_user})
+    </insert>
+    <!--撤销-->
+    <delete id="chexiao">
+        delete from apply_shenqing_nyh where apply_id=#{id}
+    </delete>
+    <!--填写申请回显-->
+    <select id="gethui" resultType="com.jk.integral.entity.ApplyEntity_nyh">
+        select * from apply_shenqing_nyh aa LEFT JOIN t_user tt on aa.apply_user=tt.user_id  where apply_id=#{id}
+    </select>
+    <!--申请成功查询-->
+    <select id="applycha" resultType="com.jk.integral.entity.ApplyEntity_nyh">
+        select * from apply_shenqing_nyh
+    </select>
+
+    <select id="applyup" resultType="com.jk.integral.entity.ApplyEntity_nyh">
+        select * from apply_shenqing_nyh where apply_id=#{id}
+    </select>
+   <!--积分PK-->
+    <select id="jifenpk" resultType="com.jk.integral.entity.UserEntity">
+        select tu.user_name,ti.integral from t_department td , t_user tu , t_integral ti
+        where tu.department_id=td.id and tu.integral_id=ti.user_id and td.id=1
+    </select>
+    <select id="jifenpk2" resultType="com.jk.integral.entity.UserEntity">
+        select tu.user_name,ti.integral from t_department td , t_user tu , t_integral ti
+        where tu.department_id=td.id and tu.integral_id=ti.user_id and td.id=2
+    </select>
+    <select id="jifenpk3" resultType="com.jk.integral.entity.UserEntity">
+        select tu.user_name,ti.integral from t_department td , t_user tu , t_integral ti
+        where tu.department_id=td.id and tu.integral_id=ti.user_id and td.id=3
+    </select>
+
+    <!--积分PK 平均分查询-->
+    <select id="pingjunfen" resultType="com.jk.integral.entity.UserEntity">
+        select tu.user_name,ti.integral from t_department td , t_user tu , t_integral ti
+        where tu.department_id=td.id and tu.integral_id=ti.user_id and td.id=1
+    </select>
+    <select id="pingjunfen1" resultType="com.jk.integral.entity.UserEntity">
+        select tu.user_name,ti.integral from t_department td , t_user tu , t_integral ti
+        where tu.department_id=td.id and tu.integral_id=ti.user_id and td.id=2
+    </select>
+    <select id="pingjunfen2" resultType="com.jk.integral.entity.UserEntity">
+        select tu.user_name,ti.integral from t_department td , t_user tu , t_integral ti
+        where tu.department_id=td.id and tu.integral_id=ti.user_id and td.id=3
+    </select>
+</mapper>

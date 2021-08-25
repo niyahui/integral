@@ -1,0 +1,58 @@
+<!-- ���� uploadify  js�ļ� -->
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/uploadify/jquery.uploadify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/uploadify/uploadify.css" />
+
+
+<!-- jsp д�� -->
+<td>��Ӱ����</td>
+<td>
+	<div id="show_file"></div>
+	<img id="show_img" width="100" height="100"/>
+	<input type="file" id="uploadImg" name="upFile"/>
+	<input type="hidden" name='movie.movieImg' size="100"/>
+</td>
+$("#show_img").attr("src",data.workImg);
+function sousuo(){
+	$("#myDialog1").datagrid("load",{
+		mname:$("#mname").textbox("getValue"),
+		status:$("input[name='status']:checked").val(),
+		type:$("#type").combobox("getValue"),
+	})
+}
+
+
+//AJAX �첽 �ϴ��ļ� ���������� 
+	$("#uploadImg").uploadify({
+		//����Դ�  ���ɺ��ԵĲ���flash���
+		'swf': '<%=request.getContextPath()%>/js/uploadify/uploadify.swf',
+		//ǰ̨�����̨��url ���ɺ��ԵĲ��� ******
+		'uploader': '<%=request.getContextPath()%>/upLoadFile!upFile.action',
+		//��div�Ľ������ӱ��� ���ɺ���******
+		'queueID': 'show_file',
+		//�ϴ��ļ��ļ��� ��file��ǩ nameֵ ����һ��******
+		'fileObjName' : 'upFile',
+		//���ϴ���ť��������
+		'buttonText': '�ϴ�',
+		//�����ļ��Ƿ��Զ��ϴ�
+		'auto': true,
+		//����ͬʱѡ�����ļ� Ĭ��Ϊtrue  ���ɺ���
+		'multi': true,
+		//�ϴ�������Ƿ���ʧ
+		'removeCompleted': true,
+		//������ʧʱ��
+		'removeTimeout' : 1,
+		//�ϴ��ļ��ĸ�������Ŀ��һ�������ϴ��ļ��ĸ���
+		'uploadLimit':  -1,
+		//�ϴ��ļ�������
+		'fileTypeExts': '*.*',
+		//�ɹ��ص����� file���ļ�����data��̨�������
+		'onUploadSuccess':function(file,data,response){
+				data = eval("("+data+")");
+				//alert(file.name+" ·����"+data.imagePath)
+				//ͼƬ���ԣ� Ԥ��
+				$("#show_img").attr("src","<%=request.getContextPath()%>/"+data.imagePath)
+				// �ı��� ����
+				$("[name='movie.movieImg']").val(data.imagePath);
+		}
+		
+});

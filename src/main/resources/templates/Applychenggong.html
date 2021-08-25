@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" th:src="@{/js_nyh/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+    <!-- rel=stylesheet：1. 定义文档与外部资源的关系；2. 是链接样式表。 -->
+    <!-- 所以说，我们用这样的方式，引入外部的css文件时，一定不能忘记rel属性的配置。 -->
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.css}">
+    <script type="text/javascript" th:src="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-table/bootstrap-table.min.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-fileinput/css/fileinput.min.css}">
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-bootbox/bootbox.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/echarts.min.js}"></script>
+
+</head>
+<body>
+<table id="mytab1" class="table table-hover" ></table>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <font size="8" color="red"> 是否确认撤销,撤销后无法还原?</font>
+                <input type="hidden" id="apply"  name="apply">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick='del()'>
+                    提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+<script>
+    //查询，分页
+    $('#mytab1').bootstrapTable({
+        method : 'get',
+        url : "applycha",
+        columns : [
+            {title : '单据号',field : 'apply_document',sortable : true},
+            {title : '积分标题',field : 'apply_headline',sortable : true},
+            {title : '积分',field : 'apply_integral',sortable : true,formatter:function (value){
+                if (value==0){
+                    return "待定";
+                }else{
+                    return value;
+                }
+                }},
+            {title : '奖扣对象',field : 'apply_jiangkou',sortable : true},
+            {title : '审核人',field : 'apply_auditor',sortable : true},
+            {title : '状态',field : 'apply_state',sortable : true,formatter:function(value,row){
+                if (value==1){
+                    return "待审核";
+                }
+                }},
+            {title : '操作',field : 'cao',formatter:function(value,row){
+                    var ser="";
+                    ser+="<button class='btn btn-primary btn-lg' data-toggle='modal' data-target='#myModal' onclick='up("+row.apply_id+")'>撤销</button>" ;
+                    return ser;
+                }},
+        ],
+    })
+    function up(apply_id){
+        $("#apply").val(apply_id)
+    }
+    function del(){
+        var  id=$("#apply").val();
+        $.ajax({
+            url:"chexiao",
+            type:"get",
+            data:{id:id},
+            success:function(){
+                location.reload([true]) ;
+            }
+        })
+    }
+</script>
+</html>

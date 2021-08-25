@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.integral.dao.JiDao">
+<select id="zong" resultType="com.jk.integral.entity.IntegralEntityNht">
+    select a.* from
+    (
+    SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+    and u.department_id=d.id  and u.position_id=p.id
+    GROUP BY u.user_name
+    )a   ORDER BY a.zongjifen DESC  LIMIT 0,10
+</select>
+<select id="zongmo" resultType="com.jk.integral.entity.IntegralEntityNht">
+    select a.* from
+    (
+    SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+    and u.department_id=d.id  and u.position_id=p.id
+    GROUP BY u.user_name
+    )a  ORDER BY a.zongjifen ASC  LIMIT 0,3
+</select>
+<select id="yue" resultType="com.jk.integral.entity.IntegralEntityNht">
+    select a.* from
+    (
+    SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+    and u.department_id=d.id  and u.position_id=p.id  and DATE_FORMAT( examine_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    GROUP BY u.user_name
+    )a   ORDER BY a.zongjifen DESC  LIMIT 0,10
+</select>
+<select id="yuemo" resultType="com.jk.integral.entity.IntegralEntityNht">
+    select a.* from
+    (
+    SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+    and u.department_id=d.id  and u.position_id=p.id and DATE_FORMAT( examine_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    GROUP BY u.user_name
+    )a  ORDER BY a.zongjifen ASC  LIMIT 0,3
+</select>
+<select id="jin" resultType="com.jk.integral.entity.IntegralEntityNht">
+    select a.* from
+    (
+    SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+    and u.department_id=d.id  and u.position_id=p.id  and TO_DAYS(examine_date) = TO_DAYS(NOW())
+    GROUP BY u.user_name
+    )a   ORDER BY a.zongjifen DESC  LIMIT 0,10
+</select>
+<select id="jinmo" resultType="com.jk.integral.entity.IntegralEntityNht">
+    select a.* from
+    (
+    SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+    and u.department_id=d.id  and u.position_id=p.id and TO_DAYS(examine_date) = TO_DAYS(NOW())
+    GROUP BY u.user_name
+    )a  ORDER BY a.zongjifen ASC  LIMIT 0,3
+</select>
+    <select id="zongname" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id
+        GROUP BY u.user_name
+        )a   ORDER BY a.zongjifen DESC  LIMIT 0,1
+    </select>
+    <select id="yuename" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id  and DATE_FORMAT( examine_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+        GROUP BY u.user_name
+        )a   ORDER BY a.zongjifen DESC  LIMIT 0,1
+    </select>
+    <select id="jinname" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id  and TO_DAYS(examine_date) = TO_DAYS(NOW())
+        GROUP BY u.user_name
+        )a   ORDER BY a.zongjifen DESC  LIMIT 0,1
+    </select>
+
+
+    <select id="zongxiang" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id
+        GROUP BY u.user_name
+        )a   ORDER BY a.zongjifen DESC
+    </select>
+    <select id="zongmoxiang" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id
+        GROUP BY u.user_name
+        )a  ORDER BY a.zongjifen ASC
+    </select>
+    <select id="yuexiang" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id  and DATE_FORMAT( examine_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+        GROUP BY u.user_name
+        )a   ORDER BY a.zongjifen DESC
+    </select>
+    <select id="yuemoxiang" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id and DATE_FORMAT( examine_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+        GROUP BY u.user_name
+        )a  ORDER BY a.zongjifen ASC
+    </select>
+    <select id="jinxiang" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id  and TO_DAYS(examine_date) = TO_DAYS(NOW())
+        GROUP BY u.user_name
+        )a   ORDER BY a.zongjifen DESC
+    </select>
+    <select id="jinmoxiang" resultType="com.jk.integral.entity.IntegralEntityNht">
+        select a.* from
+        (
+        SELECT u.user_date ruzhiriqi,u.user_id uid,u.user_name mingzi,SUM(i.integral) zongjifen,i.*,d.`name` bumen,p.`name` zhiwei from t_user u,t_integral i,t_position p,t_department d where u.user_id=i.user_id
+        and u.department_id=d.id  and u.position_id=p.id and TO_DAYS(examine_date) = TO_DAYS(NOW())
+        GROUP BY u.user_name
+        )a  ORDER BY a.zongjifen ASC
+    </select>
+    <select id="yonghuzong" resultType="com.jk.integral.entity.IntegralEntityNht">
+        SELECT u.user_name mingzi,i.* from t_user u,t_integral i where u.user_id=i.user_id  and i.user_id=#{id}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

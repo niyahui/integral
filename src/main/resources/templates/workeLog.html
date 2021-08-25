@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8"/>
+    <title>我的工作日志</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/workjs/font-awesome.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/workjs/simple-line-icons.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/workjs/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/workjs/uniform.default.min.css}" rel="stylesheet" type="text/css">
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link th:href="@{/workjs/components.css}" id="style_components" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/workjs/select2.css}"/>
+    <link th:href="@{/workjs/timeline.css}" rel="stylesheet" type="text/css"/>
+    <!-- BEGIN THEME STYLES -->
+    <link th:href="@{/workjs/plugins.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/workjs/fen.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        .picture{width: 80px;height: 80px;background: #F1F3FA;border-radius: 50% !important;border: 5px solid #ccc;}
+    </style>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-container-bg-solid page-sidebar-closed-hide-logo page-sidebar-closed" style="background:none !important;">
+<!-- BEGIN CONTAINER -->
+<div class="page-padding" style="padding:25px 20px 10px 20px;">
+    <!-- BEGIN PAGE CONTENT-->
+    <div class="row">
+        <div class="col-md-5 col-sm-12">
+            <div class="portlet box purple">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-edit"></i>写工作日志
+                    </div>
+                    <div class="tools">
+                        <!--<a href="workbonus.html" target="_blank" style="color:yellow; text-decoration:underline">日志加分规则
+                        </a>-->
+                        <a href="workbonus.html" style="color:yellow; ">日志加分规则</a>
+                        <a href="workLogForMe.html" style="color:yellow; ">查看大家的日志</a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form class="inline-form" name="form1" id="form1">
+                        工作总结
+                        <div class="form-group" style="width:100%;">
+                            <textarea rows="5" class="form-control" name="summary" id="summary" placeholder="请在此写工作总结...">
+                                今日总结：
+                            </textarea>
+                        </div>
+                        <div id="attach" style="margin-bottom:10px;">
+                        </div>
+                        工作计划
+                        <div class="form-group" style="width:100%;">
+                            <textarea rows="5" class="form-control" name="plan" id="plan" placeholder="下一步工作计划...">
+
+                            </textarea>
+                        </div>
+                        <!--<div class="form-group">
+                            <br/>只给谁看（可不填，不填则所有人都可见）
+                            <div class="input-group">
+								<span class="input-group-btn">
+								<button class="btn gaey" type="button" id="selectUser"><i class="fa fa-check"></i></button>
+								</span>
+                                <select class="form-control select2me" id="FToEmployeeIds" multiple name="FToEmployeeIds" data-placeholder="可以选择多人">
+                                </select>
+                            </div>
+                        </div>-->
+                        <br/>
+                        <!--<a href="javascript:;" id="save" class="btn purple">
+                            保存工作日志 </a> -->
+                        <button onclick="sub()">保存工作日志</button>
+                        <a href="myWorkLog.html" id="myWorkLog">我的日志</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-sm-12">
+            <div class="timeline">
+            </div>
+        </div>
+    </div>
+
+    <!-- END PAGE CONTENT -->
+</div>
+<script type="text/javascript">
+    function sub() {
+        $.ajax({
+            url:"writeWorkLog",
+            type:'post',
+            data:$("#form1").serialize(),//表单序列化
+            //dataType:'json',
+            success:function(){
+                $('#myDiv').bootstrapTable('refresh');//刷新表格
+            }
+        })
+    }
+</script>
+    <!--<a href="workbonus.html">日志加分规则</a>-->
+<script th:src="@{/workjs/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/workjs/jquery-migrate.min.js}" type="text/javascript"></script>
+<!-- IMPORTANT! Load jquery-ui.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+<script th:src="@{/workjs/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/workjs/jquery.slimscroll.min.js}" type="text/javascript"></script>
+<script th:src="@{/workjs/jquery.uniform.min.js}" type="text/javascript"></script>
+<script th:src="@{/workjs/jquery.blockui.min.js}" type="text/javascript"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" th:src="@{/workjs/select2.min.js}"></script>
+<script type="text/javascript" th:src="@{/workjs/jquery.validate.min.js}"></script>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script th:src="@{/workjs/metronic.js}" type="text/javascript"></script>
+<script th:src="@{/workjs/fen.js}"></script>
+<script th:src="@{/workjsmyWorkLog.js}"></script>
+<script>
+    jQuery(document).ready(function() {
+        Metronic.init(); // init metronic core components
+        Module.init();
+    });
+</script>
+</body>
+</html>

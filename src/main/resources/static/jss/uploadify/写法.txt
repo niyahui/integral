@@ -1,0 +1,82 @@
+<!-- 引入 uploadify  js文件 -->
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/uploadify/jquery.uploadify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/uploadify/uploadify.css" />
+
+<Context path="/img" docBase="D:\\img\\upload" reloadable="true" /> 
+ return "<img src='"+value+"' style='width:50px;height:50px'/>";
+<!-- jsp 写法 -->
+<input type="hidden" id="scenic_img" name="scenic_img" >
+			<div>
+				<img id="show_img" width="100px" height="100px"><br>
+				<label id="name"></label>
+				<input type="file" id="uploadImg" name="imgfile"/>
+				<div id="imgShow"></div>
+			</div><br>
+
+
+
+
+$("#uploadImg").uploadify({
+		//插件自带  不可忽略的参数flash插件,需要你修改浏览器的flash为开启
+		'swf': '<%=request.getContextPath()%>/js/uploadify/uploadify.swf',
+		//前台请求后台的url 不可忽略的参数 ******
+		'uploader': '<%=request.getContextPath()%>/jing/upload.do',
+		//给div的进度条加背景 不可忽略******
+		'queueID': 'show_file',
+		//上传文件文件名 跟file标签 name值 保持一致******
+		'fileObjName' : 'imgfile',
+		//给上传按钮设置文字
+		'buttonText': '上传',
+		//设置文件是否自动上传
+		'auto': true,
+		//可以同时选择多个文件 默认为true  不可忽略
+		'multi': true,
+		//上传后队列是否消失
+		'removeCompleted': true,
+		//队列消失时间
+		'removeTimeout' : 1,
+		//上传文件的个数，项目中一共可以上传文件的个数
+		'uploadLimit':  -1,
+		//上传文件的类型
+		'fileTypeExts': '*.*',
+		//成功回调函数 file：文件对象。data后台输出数据
+		'onUploadSuccess':function(file,data,response){
+				//alert(data);
+//				console.log(file);
+			//因为字符串，需要json转为对象
+//				console.log(JSON.parse(data));
+			var obj = JSON.parse(data);
+			//分别得到绝对路径和访问路径
+				console.log(obj.filePath);
+				console.log(obj.requestPath);
+			//图片回显， 预览
+				$("#show_img").attr("src",obj.requestPath);
+			//显示文件名字
+				$("#name").text(file.name);
+				$("#scenic_img").val(obj.requestPath);//和图片实体类一致
+			//为下载做准备，将绝对路径放到隐藏域里
+			$("#path").val(obj.filePath);   //下载用的
+		},
+		
+	}) 
+function update(){
+	var ches=$("#myTree").datagrid("getChecked");
+	console.log(ches);
+	var arr=[];
+	for (var i = 0; i < ches.length; i++) {
+		arr.push(ches[i].id);
+	}
+	console.log(arr);
+	$.ajax({
+		url:"<%=request.getContextPath()%>/book/update.do",
+		type:"post",
+		data:{ids:arr},
+		traditional: true,
+		success:function(){
+			sousuo();
+		},
+		error:function(){
+			sousuo();
+		}
+	})
+}

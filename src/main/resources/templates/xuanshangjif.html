@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+    <script type="text/javascript" th:src="@{/js/echarts.min.js}"></script>
+
+</head>
+<body>
+
+
+<div id="addModal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">确认领取任务</h4>
+            </div>
+            <form id="myForm1">
+                <input type="text" class="form-control"   name="linqu_id" id="linqu_id" placeholder="人员id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" class="form-control"name="jifen"  id="jifen" placeholder="充值对象">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="state" id="state" placeholder="手机号">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="shengher_name" id="shengher_name" placeholder="充值金额">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="headline" id="headline" placeholder="备注说明">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="mioashu" id="mioashu" placeholder="备注说明">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="use_id" id="use_id" placeholder="备注说明">
+                    </div>
+
+
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addchong()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="addModal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <input  class="form-control" id="headline" placeholder="标题"/>
+            <input  class="rd" id="state" placeholder="状态"/>
+            <select id="state">
+              <option selected>请选择</option>
+                <option value="1">待完成</option>
+                <option value="2">已完成完成</option>
+            </select>
+            <input class='btn btn-default' type='button' onclick='sousuo1()' value='查询'>
+
+            <table id="myTable2"></table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addchong2()">查看我的领取</button>
+
+
+<table id="myTable"></table>
+</body>
+<script>
+    $('#myTable').bootstrapTable({
+        method : 'get',
+        url : "weiLinquRwuGet",
+        columns : [
+            {field:"linqu_id",title:"编号"},
+            {field:"headline",title:"标题"},
+            {title : '操作',field : 'cao',sortable : true,formatter:function(value,row){
+                    var ser="";
+                        ser+="<button  class='btn btn-success' data-toggle='modal'  onclick='linqu("+row.linqu_id+")'>领取任务</button>"
+                    return ser;
+                }},
+
+        ],
+        pagination:true,
+        pageSize:2,
+        pageList:[2,4,6],
+        sidePagination: "client",//前台开启分页
+
+    })
+
+
+
+    function sousuo1(){
+        $("#myTable2").bootstrapTable("refresh", {
+            "query": {
+                headline: $("#headline").val(),
+                state: $("#state").val(),
+            }
+        });
+    }
+
+
+
+    //修改回显
+    function linqu(linqu_id) {
+        $.ajax({
+            type:"get",
+            url:"weiLinquRwuHuixian?linqu_id="+linqu_id,
+            async:true,
+            data:"",
+            success:function(res){
+                //设置回显用户数据
+                $("#linqu_id").val(res.linqu_id)
+                $("#jifen").val(res.jifen)
+                $("#state").val(res.state)
+                $("#shengher_name").val(res.shengher_name)
+                $("#headline").val(res.headline)
+                $("#mioashu").val(res.mioashu)
+                $("#use_id").val(res.use_id)
+                $("#addModal1").modal()
+            }
+        });
+    }
+
+
+
+
+    addchong= function(){
+        $.ajax({
+            url:"linqurw",
+            data:$("#myForm1").serialize(),
+            type:"post",
+            success:function(){
+                $("#mytab").bootstrapTable("refresh");
+            }
+        })
+        $('#addModal1').modal('hide');
+    }
+
+
+
+
+
+
+
+    addchong2= function(){
+        $('#addModal2').modal('show');
+        $('#myTable2').bootstrapTable({
+            method : 'get',
+            url : "LinquRwuGet",
+            columns : [
+                {field:"linqu_id",title:"编号"},
+                {field:"jifen",title:"积分"},
+                {field:"state",title:"状态"},
+                {field:"shengher_name",title:"操作人员"},
+                {field:"headline",title:"标题"},
+                {field:"mioashu",title:"描述"},
+                {field:"use_id",title:"关联个人id"},
+                {title : '操作',field : 'cao',sortable : true,formatter:function(value,row){
+                        var ser="";
+                        if(row.state==1){
+                            ser+="<button  class='btn btn-success' data-toggle='modal'  onclick='tonz("+row.linqu_id+")'>我已完成任务,通知审核人</button>"
+                        }
+                        return ser;
+                    }},
+
+            ],
+            pagination:true,
+            pageSize:2,
+            pageList:[2,4,6],
+            sidePagination: "client",//前台开启分页
+
+        })
+
+    }
+
+
+
+    tonz= function(linqu_id){
+        $.ajax({
+            type:"post",
+            url:"tonzUser?linqu_id="+linqu_id,
+            async:true,
+            data:"",
+            success:function(){
+               alert("成功")
+            }
+        });
+    }
+
+
+
+</script>
+
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" th:src="@{/js_nyh/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+    <!-- rel=stylesheet：1. 定义文档与外部资源的关系；2. 是链接样式表。 -->
+    <!-- 所以说，我们用这样的方式，引入外部的css文件时，一定不能忘记rel属性的配置。 -->
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.css}">
+    <script type="text/javascript" th:src="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-table/bootstrap-table.min.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-fileinput/css/fileinput.min.css}">
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-bootbox/bootbox.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/echarts.min.js}"></script>
+
+
+
+</head>
+<body>
+<form id="myForm">
+    <input id="id" name="id" type="hidden">
+    积分事项<input type="text" class="form-control" name="apply_headline" id="apply_headline">
+    申请分数<input type="text" readonly class="form-control" name="apply_integral" id="apply_integral">
+    奖扣对象<input type="text" class="form-control" name="user_name" id="user_name">
+    @审核人<input type="text" class="form-control" name="apply_auditor" id="apply_auditor">
+    申请内容<input type="text" class="form-control" name="apply_neirong" id="apply_neirong">
+    <button type="submit" class="btn btn-default" onclick="tijiao()" >提交</button>
+</form>
+</body>
+<script>
+    $(function(){
+        up();
+    })
+
+    function tijiao(){
+        $.ajax({
+            url:"applyadd",
+            type:"get",
+            data:$("#myForm").serialize(),
+            dataType:"json",
+            success:function(){
+                location.href="Applychenggong.html";
+            },
+            error:function(){
+                location.href="Applychenggong.html";
+            }
+        })
+    }
+    function up() {
+        $.ajax({
+            url:"gethui",
+            success:function(data){
+                $("#apply_id").val(data.apply_id);
+                $("#apply_headline").val(data.apply_headline);
+                $("#apply_integral").val(data.apply_integral);
+                $("#user_name").val(data.user_name);
+            },
+            error:function(){
+                alert(222)
+            }
+        })
+    }
+</script>
+</html>

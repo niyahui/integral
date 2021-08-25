@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.integral.dao.UserDao">
+
+    <select id="UserEntity" resultType="com.jk.integral.entity.UserEntity">
+        select * from t_user where user_num=#{user_num} and user_password=#{user_password}
+    </select>
+
+
+    <select id="getById" resultType="com.jk.integral.entity.UserEntity">
+        select * from t_user where user_id=#{0}
+    </select>
+
+    <update id="update">
+        update t_user set user_password=#{user_password}
+    </update>
+
+    <select id="select1" resultType="com.jk.integral.entity.Missionhall_fwt">
+        select * from missionhall_fwt where id=(select min(id) from missionhall_fwt where userid=#{0}) and userid=#{0}
+    </select>
+
+    <select id="chaxiao1" resultType="com.jk.integral.entity.Missionhall_fwt">
+        select min(id) from missionhall_fwt where userid=#{0}
+    </select>
+
+    <update id="update1">
+        update missionhall_fwt set wan=2 where id=#{xiao} and userid=#{id}
+    </update>
+    <update id="jia">
+        update missionhall_fwt set report=#{report} where id=#{id} and userid=#{id}
+    </update>
+    <update id="unfinished">
+        update missionhall_fwt set accomplish=#{accomplish} where id=#{id} and userid=#{id}
+    </update>
+    <update id="wancheng">
+        update missionhall_fwt set unfinished=0 where id=#{id} and userid=#{id}
+    </update>
+</mapper>

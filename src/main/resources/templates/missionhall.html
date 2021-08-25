@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/jsss/font-awesome.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/jsss/simple-line-icons.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/jsss/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" th:href="@{/jsss/bootstrap-editable.css}">
+    <!-- BEGIN THEME STYLES -->
+    <link th:href="@{/jsss/components(1).css}" id="style_components" rel="stylesheet" type="text/css">
+    <link th:href="@{/jsss/plugins.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/jsss/fen.css}" rel="stylesheet" type="text/css">
+    <style>
+        .error-404 {margin-top:20px}
+        .error-404 p {color: #333;font-size: 14px;}
+        .portlet>.portlet-title>.nav-tabs>li.active>a, .portlet>.portlet-title>.nav-tabs>li:hover>a {
+            color: #333;
+            border: 0;
+        }
+        td {
+            background: #f6fbfc;
+        }
+        h4 {
+            font-size:14px; height: 70px;padding-top: 10px;color: #333;
+        }
+        .result {
+            height: 20px; text-overflow:ellipsis;overflow:hidden;color: #333;
+        }
+        .label2{
+
+            display: block;
+
+            position:relative;
+
+            width: 25%;
+
+            height: 2em;
+
+            background-color: #45B6AF;
+
+            color: #ffffff;
+
+            font-weight: bold;
+
+            line-height: 28px;
+
+            text-align: center;
+
+            float: right;
+
+            transform: translate(25%, 20%) rotate(45deg);
+
+            box-shadow: 0 0 5px rgba(0,0,0,.5),inset 0 0 2px #fff;
+
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+
+        }
+
+        a{
+
+            font-family: 微软雅黑;
+
+            text-decoration: none;
+
+            cursor: auto;
+
+        }
+        .good {
+            background-color:#ccc;
+        }
+        .common {
+            background-color:#ccc;
+        }
+        .bad {
+            background-color:#ccc;
+        }
+        .no {
+            background-color:#ccc;
+        }
+        .col-md-4{
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+<body style="background: #f6fbfc;">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="myForm">
+                <textarea id="nei" cols="50" rows="10"></textarea><br/>
+                <button onclick="ti()" type="submit" class="btn btn-success">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="FRemark" id="FRemark">
+<!-- BEGIN CONTAINER -->
+<div class="page-padding" style="padding:25px 20px 10px 20px;">
+    <!-- BEGIN PAGE CONTENT-->
+    <div class="portlet box purple">
+        <div class="portlet-title">
+            <ul class="nav nav-tabs pull-left">
+                <li class="active">
+                    <a href="https://hi.xiaov100.com/templates/target/target.html#portlet_tab_0" data-toggle="tab" id="tab0" aria-expanded="true">我接到的临时任务</a>
+                </li>
+                <li class="">
+                    <a href="https://hi.xiaov100.com/templates/target/target.html#portlet_tab_1" data-toggle="tab" id="tab1" aria-expanded="false">每天的</a>
+                </li>
+                <li class="">
+                    <a href="https://hi.xiaov100.com/templates/target/target.html#portlet_tab_2" data-toggle="tab" id="tab2" aria-expanded="false">每周的</a>
+                </li>
+                <li class="">
+                    <a href="https://hi.xiaov100.com/templates/target/target.html#portlet_tab_3" data-toggle="tab" id="tab3" aria-expanded="false">每月的</a>
+                </li>
+            </ul>
+            <div class="caption pull-right">
+                <a href="<!--查询页面-->" target="_blank" id="history" style="color:yellow; text-decoration:underline">查询</a>
+            </div>
+        </div>
+        <div class="portlet-body"><!--class="portlet-body"-->
+            <div class="tab-content">
+                <div class="tab-pane active" id="portlet_tab_0" style="padding-left:10px; padding-right:10px;">
+                    <div class="row" id="box0">
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:245px">
+                                        <h3><span id="salaname"><!--任务名称--></span></h3><h3></h3>
+                                        <h4><span id="content"><!--任务内容--></span></h4>
+                                        <div>
+                                            <span class="label label-default">完成期限: <span id="deadline"><!--期限--></span>之前</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;我已完成此任务</a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <input type="checkbox" id="completed6188484893550001" feventid="6188484893550001" name="completed" class="md-check completed0">
+                                            <span id="huan"></span>
+                                            <span id="niu"></span><br>
+                                        </div><span id="zi"></span><br>
+                                    <font color="aqua" size="4"><span id="report"></span></font>
+                                        <span id="wei"></span><span id="an"><!--按钮--></span>
+                                        <span id="stype" hidden></span>
+                                        <span id="rule" hidden></span>
+                                        <span id="wan" hidden></span>
+                                        <span id="id" hidden></span>
+                                        <span id="xu" hidden></span>
+                                        <span id="sday" hidden></span>
+                                        <span id="cheng" hidden></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you"></span>
+                                <span id="he"></span>
+                                <span id="buhe"></span>
+                                <span id="mei"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4"><table class="table table-bordered">
+                            <tbody><tr><td colspan="4" style="height:245px"><h3>新员工培训</h3><h3></h3>
+                                <h4>新员工上岗培训</h4>
+                                <div><span class="label label-default">完成期限: 2021-05-07 24:00之前</span></div>
+                            </td></tr><tr>
+                                <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                    <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                        <i class="fa fa-check"></i>&nbsp;我已完成此任务</a>
+                                    <div class="md-checkbox md-checkbox-inline has-error">
+                                        <input type="checkbox" id="completed6188484893560001" feventid="6188484893560001" name="completed" class="md-check completed0">
+                                        <span id="huan1"></span>
+                                        <span id="niu1"></span><br>
+                                    </div><span id="zi1"></span><br>
+                                    <font color="aqua" size="4"><span id="lei1"></span></font>
+                                    <span id="wei1"></span><span id="an1"><!--按钮--></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                           </table>
+                            <tr>
+                                <span id="you1"></span>
+                                <span id="he1"></span>
+                                <span id="buhe1"></span>
+                                <span id="mei1"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered"><tbody><tr>
+                                <td colspan="4" style="height:245px">
+                                    <h3>制作产品介绍PPT</h3><h3></h3>
+                                    <h4>之前的PPT做的还不完善, PPT需要重新设计过</h4>
+                                    <div><span class="label label-default">完成期限: 2021-05-17 24:00之前</span></div>
+                                </td></tr>
+                            <tr>
+                                <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                    <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                        <i class="fa fa-check"></i>&nbsp;我已完成此任务</a>
+                                    <div class="md-checkbox md-checkbox-inline has-error">
+                                        <input type="checkbox" id="completed6188484893570001" feventid="6188484893570001" name="completed" class="md-check completed0">
+                                        <span id="huan2"></span>
+                                        <span id="niu2"></span><br>
+                                    </div><span id="zi2"></span><br>
+                                    <font color="aqua" size="4"><span id="lei2"></span></font>
+                                    <span id="wei2"></span><span id="an2"><!--按钮--></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                            <tr>
+                                <span id="you2"></span>
+                                <span id="he2"></span>
+                                <span id="buhe2"></span>
+                                <span id="mei2"></span>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
+                <!--每天的-->
+                <div class="tab-pane" id="portlet_tab_1" style="padding-left:10px; padding-right:10px;">
+                    <div class="row" id="box1">
+                        <div class="col-md-4">
+                            <table class="table table-bordered"><tbody>
+                            <tr><td colspan="4" style="height:188px">
+                                <h3>每天的销售统计</h3><h3></h3>
+                                <h4>统计销售部门每个人当日的销售额</h4>
+                                <b id="FCountStart5166744540000001" style="display:none">0</b>
+                            </td></tr>
+                            <tr><td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                    <i class="fa fa-check"></i>&nbsp;今天我已做到</a>
+                                <div class="md-checkbox md-checkbox-inline has-success">
+                                    <input type="checkbox" id="completed5166744540000001" ftargetid="5166744540000001" name="completed" class="md-check completed1" checked="">
+                                    <span id="huan3"></span>
+                                    <span id="niu3"></span><br>
+                                </div>
+                                <span id="zi3"></span><br>
+                                <font color="aqua" size="4"><span id="lei3"></span></font>
+                                <span id="wei3"></span><span id="an3"><!--按钮--></span>
+                            </td></tr>
+                            </tbody>
+                            </table>
+                            <tr>
+                                <span id="you3"></span>
+                                <span id="he3"></span>
+                                <span id="buhe3"></span>
+                                <span id="mei3"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>每天开早例会</h3><h3></h3>
+                                        <h4>每天开早例会，安排当天的工作</h4>
+                                        <b id="FCountStart5166743664370001" style="display:none">0</b>
+                                    </td></tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;今天我已做到</a>
+                                        <div class="md-checkbox md-checkbox-inline has-success">
+                                            <input type="checkbox" id="completed5166743664370001" ftargetid="5166743664370001" name="completed" class="md-check completed1" checked="">
+                                            <span id="huan4"></span>
+                                            <span id="niu4"></span><br>
+                                        </div>
+                                        <span id="zi4"></span><br>
+                                        <font color="aqua" size="4"><span id="lei4"></span></font>
+                                        <span id="wei4"></span><span id="an4"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you4"></span>
+                                <span id="he4"></span>
+                                <span id="buhe4"></span>
+                                <span id="mei4"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>每日检查下属工作</h3><h3></h3>
+                                        <h4>每日下班检查下属工作进度</h4>
+                                        <b id="FCountStart5166743240770001" style="display:none">0</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;今天我已做到
+                                        </a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <input type="checkbox" id="completed5166743240770001" ftargetid="5166743240770001" name="completed" class="md-check completed1">
+                                            <span id="huan5"></span>
+                                            <span id="niu5"></span><br>
+                                        </div>
+                                        <span id="zi5"></span><br>
+                                        <font color="aqua" size="4"><span id="lei5"></span></font>
+                                        <span id="wei5"></span><span id="an5"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you5"></span>
+                                <span id="he5"></span>
+                                <span id="buhe5"></span>
+                                <span id="mei5"></span>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
+                <!--每周的-->
+                <div class="tab-pane" id="portlet_tab_2">
+                    <div class="row" id="box2">
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>每周完成3个老客户走访</h3><h3></h3>
+                                        <h4>每周走访3个老客户，每多走访一个加2分，每少一个扣2分，20分封顶</h4>
+                                        <b id="FCountStart5166753882710001" style="display:none">3</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;这周我已做到
+                                        </a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <span id="huan6"></span>
+                                            <span id="niu6"></span><br>
+                                        </div>
+                                        <span id="zi6"></span><br>
+                                        <font color="aqua" size="4"><span id="lei6"></span></font>
+                                        <span id="wei6"></span><span id="an6"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you6"></span>
+                                <span id="he6"></span>
+                                <span id="buhe6"></span>
+                                <span id="mei6"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered"><tbody>
+                            <tr>
+                                <td colspan="4" style="height:188px">
+                                    <h3>每周完成5个面试</h3><h3></h3>
+                                    <h4>每周完成5个面试，每多一个加1分，每少一个扣1分</h4>
+                                    <b id="FCountStart5166753065050001" style="display:none">5</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                    <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                        <i class="fa fa-check"></i>&nbsp;这周我已做到
+                                    </a>
+                                    <div class="md-checkbox md-checkbox-inline has-error">
+                                        <span id="huan7"></span>
+                                        <span id="niu7"></span><br>
+                                    </div>
+                                    <span id="zi7"></span><br>
+                                    <font color="aqua" size="4"><span id="lei7"></span></font>
+                                    <span id="wei7"></span><span id="an7"><!--按钮--></span>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                            </table>
+                            <tr>
+                                <span id="you7"></span>
+                                <span id="he7"></span>
+                                <span id="buhe7"></span>
+                                <span id="mei7"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>每周召开一次周例会</h3><h3></h3>
+                                        <h4>每周召开一次周例会</h4>
+                                        <b id="FCountStart5166749872690001" style="display:none">0</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;这周我已做到
+                                        </a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <span id="huan8"></span>
+                                            <span id="niu8"></span><br>
+                                        </div>
+                                        <span id="zi8"></span><br>
+                                        <font color="aqua" size="4"><span id="lei8"></span></font>
+                                        <span id="wei8"></span><span id="an8"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you8"></span>
+                                <span id="he8"></span>
+                                <span id="buhe8"></span>
+                                <span id="mei8"></span>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
+                <!--每月的-->
+                <div class="tab-pane" id="portlet_tab_3">
+                    <div class="row" id="box3">
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>每个月做一次财务分析报表</h3><h3></h3>
+                                        <h4>对于上月公司财务运营状况做一次财务分析和总结</h4>
+                                        <b id="FCountStart5166748928310001" style="display:none">0</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;本月我已做到
+                                        </a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <span id="huan9"></span>
+                                            <span id="niu9"></span><br>
+                                        </div>
+                                        <span id="zi9"></span><br>
+                                        <font color="aqua" size="4"><span id="lei9"></span></font>
+                                        <span id="wei9"></span><span id="an9"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you9"></span>
+                                <span id="he9"></span>
+                                <span id="buhe9"></span>
+                                <span id="mei9"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>积分制每月运行情况的总结</h3><h3></h3>
+                                        <h4>对本月积分制运行过程中碰到的问题作及时调整</h4>
+                                        <b id="FCountStart5166747252360001" style="display:none">0</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;本月我已做到
+                                        </a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <span id="huan10"></span>
+                                            <span id="niu10"></span><br>
+                                        </div>
+                                        <span id="zi10"></span><br>
+                                        <font color="aqua" size="4"><span id="lei10"></span></font>
+                                        <span id="wei10"></span><span id="an10"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you10"></span>
+                                <span id="he10"></span>
+                                <span id="buhe10"></span>
+                                <span id="mei10"></span>
+                            </tr>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="height:188px">
+                                        <h3>每月做一次库存盘点</h3><h3></h3>
+                                        <h4>每月做一次库存盘点</h4>
+                                        <b id="FCountStart5166413620330001" style="display:none">0</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="4" style="background-color:#fff; height:110px;">
+                                        <a href="javascript:;" class="btn green yes" style="display:none" flag="yes">
+                                            <i class="fa fa-check"></i>&nbsp;本月我已做到
+                                        </a>
+                                        <div class="md-checkbox md-checkbox-inline has-error">
+                                            <span id="huan11"></span>
+                                            <span id="niu11"></span><br>
+                                        </div>
+                                        <span id="zi11"></span><br>
+                                        <font color="aqua" size="4"><span id="lei11"></span></font>
+                                        <span id="wei11"></span><span id="an11"><!--按钮--></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <tr>
+                                <span id="you11"></span>
+                                <span id="he11"></span>
+                                <span id="buhe11"></span>
+                                <span id="mei11"></span>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT -->
+</div>
+</body>
+<script th:src="@{/jsss/jquery.min.js}" type="text/javascript"></script>
+<script type="text/javascript" th:src="@{/jss/bootStrap-addTabs/bootstrap.addtabs.min.js}"></script>
+<script th:src="@{/jsss/jquery-migrate.min.js}" type="text/javascript"></script>
+<script th:src="@{/jsss/bootstrap.min.js}" type="text/javascript"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" th:src="@{/jsss/jquery.mockjax.js}"></script>
+<script type="text/javascript" th:src="@{/jsss/bootstrap-editable.js}"></script>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script th:src="@{/jsss/metronic.js}" type="text/javascript"></script>
+<script th:src="@{/jsss/fen.js}"></script>
+<script>
+    jQuery(document).ready(function() {
+        var FPeriod = getParam(window.location.href, 'FPeriod');
+        if (FPeriod == Status.TargetPeriodStatus.day) {
+            $("#tab1").click();
+        } else if (FPeriod == Status.TargetPeriodStatus.week) {
+            $("#tab2").click();
+        } else if (FPeriod == Status.TargetPeriodStatus.month) {
+            $("#tab3").click();
+        }
+    });
+</script>
+<script type="text/javascript">
+    var zhi1=0;
+    $.ajax({
+        url:"select1",
+        dataType:"json",
+        success:function(data){
+            $("#id").html(data.id);
+            $("#salaname").html(data.salaname);
+            $("#content").html(data.content);
+            $("#stype").html(data.stype);
+            if($("#stype").text()==1){
+                $("#deadline").html(data.deadline);
+            }
+            $("#rule").html(data.rule);
+            $("#wan").html(data.wan);
+            $("#report").html(data.report);
+            $("#xu").html(data.xu);
+            $("#sday").html(data.sday);
+            $("#cheng").html(data.accomplish);
+
+            zhi1=$("#rule").text();
+            if(zhi1==1){
+                if($("#wan").text()==1){
+                    $("#niu").html("<input type='button' value='完成提交' onclick='gethuan()'>");
+                }else{
+                    $("#niu").html(" ");
+                    $("#zi").html("<font color='red' size='6'>已完成</font>");
+                }
+                var aa=$("#wan").text();
+                if(aa==1){
+                    $("#huan").html("<font color='red' size='6'>×</font>");
+                }else{
+                    $("#huan").html("<font color='#7fffd4' size='6'>√</font>");
+                }
+                if($("#report").text()==null || $("#report").text()==""){
+                    $("#wei").html("<font color='red' size='5'>未写任务报告</font>");
+                    $("#an").html("<input type='button' value='+' onclick='jia()'>");
+                }
+                $("#you").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+                $("#he").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+                $("#buhe").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+                $("#mei").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+            }else if(zhi1==2){
+                if( $("#cheng").text()==null ||  $("#cheng").text()==""){
+                    $("#huan").html("<input type='text' class='form-control FCount' name='FCount' id='accomplish' style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+                    $("#niu").html("<input type='button' value='确定' onclick='que()'>");
+                }else{
+                    $("#huan").html("<font color='#7fffd4' size='6'>√</font>");
+                    $("#niu").html(" ");
+                    $("#zi").html("<font color='red' size='6'>已完成</font>");
+                }
+                if($("#report").text()==null || $("#report").text()==""){
+                    $("#wei").html("<font color='red' size='5'>未写任务报告</font>");
+                    $("#an").html("<input type='button' value='+' onclick='jia()'>");
+                }
+            }
+
+        }
+    })
+    function gethuan(){
+        $.ajax({
+            url:"update1",
+            success:function(){
+               if($("#report").text()==null || $("#report").text()==""){
+                   alert("提交成功，但还未填写任务报告哦");
+               }else{
+                   alert("提交成功");
+               }
+            }
+        })
+        $("#huan").html("<font color='#7fffd4' size='6'>√</font>");
+        $("#niu").html(" ");
+        $("#zi").html("<font color='red' size='6'>已完成</font>");
+    }
+function jia(){
+    $("#myModal").modal("show");
+}
+function ti(){
+        alert($("#nei").val());
+        $.ajax({
+         url:"jia",
+            data:{id:$("#id").text(),report:$("#nei").val()},
+            success:function (){
+             alert("已提交");
+            }
+        })
+}
+function que(){
+        var time=new Date($("#sday").text());
+        var dang=new Date();
+        alert(time.getTime());
+        if(time.getTime()<dang.getTime()){
+           alert("任务已过期");
+        }else{
+            var xuwancheng=$("#xu").text();
+            var wanhchengdu=$("#accomplish").val();
+            if(wanhchengdu<0 || wanhchengdu==null || wanhchengdu=="") {
+                alert("错误填写");
+            }
+            if (wanhchengdu> Number(xuwancheng)) {
+                $.ajax({
+                    url: "../sala/wancheng",
+                    data: {id: $("#id").text(), accomplish: $("#accomplish").val()},
+                    success: function () {
+                        if ($("#report").text() == null || $("#report").text() == "") {
+                            alert("超额完成任务，但还未填写任务报告哦");
+                        } else {
+                            alert("超额完成任务");
+                        }
+                        $("#huan").html("<font color='#7fffd4' size='6'>√</font>");
+                        $("#niu").html(" ");
+                        $("#zi").html("<font color='red' size='6'>已完成</font>");
+                    }
+                })
+            }
+            if(wanhchengdu==0 || wanhchengdu<Number(xuwancheng)){
+                $.ajax({
+                    url:"unfinished",
+                    data:{id:$("#id").text(),unfinished:$("#accomplish").val()},
+                    success:function(){
+                        alert("还未完成目标，请继续努力");
+                    }
+                })
+            }
+            if(wanhchengdu==Number(xuwancheng)){
+                $.ajax({
+                    url:"wancheng",
+                    data:{id:$("#id").text(),accomplish:$("#accomplish").val()},
+                    success:function (){
+                        if($("#report").text()==null || $("#report").text()==""){
+                            alert("提交成功，但还未填写任务报告哦");
+                        }else{
+                            alert("提交成功");
+                        }
+                        $("#huan").html("<font color='#7fffd4' size='6'>√</font>");
+                        $("#niu").html(" ");
+                        $("#zi").html("<font color='red' size='6'>已完成</font>");
+                    }
+                })
+            }
+
+        }
+}
+
+
+
+
+
+
+
+var bb=1;
+
+if(bb==1){
+    $("#niu1").html("<input type='button' value='完成提交' onclick='gethuan1()'>");
+    var aa=1;
+    function gethuan1(){
+        $("#huan1").html("<font color='#7fffd4' size='6'>√</font>");
+        $("#niu1").html(" ");
+        $("#zi1").html("<font color='red' size='6'>已完成</font>");
+    }
+    if(aa==1){
+        $("#huan1").html("<font color='red' size='6'>×</font>");
+    }else{
+        $("#huan1").html("<font color='#7fffd4' size='6'>√</font>");
+    }
+    if($("#lei1").text()==1){
+        $("#an1").html("<font color='#7fffd4' size='4'>ok</font>");
+    }else{
+        $("#wei1").html("<font color='red' size='5'>未写任务报告</font>");
+        $("#an1").html("<input type='button' value='+'>");
+    }
+    $("#you1").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+    $("#he1").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+    $("#buhe1").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+    $("#mei1").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+}else if(bb==2){
+   $("#huan1").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+   $("#niu1").html("<input type='button' value='确定'>");
+    if($("#lei1").text()==1){
+        $("#an1").html("<font color='#7fffd4' size='4'>ok</font>");
+    }else{
+        $("#wei1").html("<font color='red' size='5'>未写任务报告</font>");
+        $("#an1").html("<input type='button' value='+'>");
+    }
+}
+if(bb==1){
+    $("#niu2").html("<input type='button' value='完成提交' onclick='gethuan2()'>");
+    var aa=1;
+    function gethuan2(){
+        $("#huan2").html("<font color='#7fffd4' size='6'>√</font>");
+        $("#niu2").html(" ");
+        $("#zi2").html("<font color='red' size='6'>已完成</font>");
+    }
+    if(aa==1){
+        $("#huan2").html("<font color='red' size='6'>×</font>");
+    }else{
+        $("#huan2").html("<font color='#7fffd4' size='6'>√</font>");
+    }
+    if($("#lei2").text()==1){
+        $("#an2").html("<font color='#7fffd4' size='4'>ok</font>");
+    }else{
+        $("#wei2").html("<font color='red' size='5'>未写任务报告</font>");
+        $("#an2").html("<input type='button' value='+'>");
+    }
+    $("#you2").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+    $("#he2").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+    $("#buhe2").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+    $("#mei2").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+}else if(bb==2){
+    $("#huan2").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+    $("#niu2").html("<input type='button' value='确定'>");
+    if($("#lei2").text()==1){
+        $("#an2").html("<font color='#7fffd4' size='4'>ok</font>");
+    }else{
+        $("#wei2").html("<font color='red' size='5'>未写任务报告</font>");
+        $("#an2").html("<input type='button' value='+'>");
+    }
+}
+    if(bb==1){
+        $("#niu3").html("<input type='button' value='完成提交' onclick='gethuan3()'>");
+        var aa=1;
+        function gethuan3(){
+            $("#huan3").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu3").html(" ");
+            $("#zi3").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan3").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan3").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei3").text()==1){
+            $("#an3").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei3").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an3").html("<input type='button' value='+'>");
+        }
+        $("#you3").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he3").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe3").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei3").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan3").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu3").html("<input type='button' value='确定'>");
+        if($("#lei3").text()==1){
+            $("#an3").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei3").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an3").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu4").html("<input type='button' value='完成提交' onclick='gethuan4()'>");
+        var aa=1;
+        function gethuan4(){
+            $("#huan4").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu4").html(" ");
+            $("#zi4").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan4").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan4").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei4").text()==1){
+            $("#an4").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei4").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an4").html("<input type='button' value='+'>");
+        }
+        $("#you4").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he4").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe4").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei4").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan4").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu4").html("<input type='button' value='确定'>");
+        if($("#lei4").text()==1){
+            $("#an4").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei4").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an4").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu5").html("<input type='button' value='完成提交' onclick='gethuan5()'>");
+        var aa=1;
+        function gethuan5(){
+            $("#huan5").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu5").html(" ");
+            $("#zi5").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan5").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan5").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei5").text()==1){
+            $("#an5").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei5").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an5").html("<input type='button' value='+'>");
+        }
+        $("#you5").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he5").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe5").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei5").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan5").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu5").html("<input type='button' value='确定'>");
+        if($("#lei5").text()==1){
+            $("#an5").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei5").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an5").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu6").html("<input type='button' value='完成提交' onclick='gethuan6()'>");
+        var aa=1;
+        function gethuan6(){
+            $("#huan6").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu6").html(" ");
+            $("#zi6").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan6").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan6").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei6").text()==1){
+            $("#an6").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei6").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an6").html("<input type='button' value='+'>");
+        }
+        $("#you6").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he6").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe6").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei6").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan6").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu6").html("<input type='button' value='确定'>");
+        if($("#lei6").text()==1){
+            $("#an6").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei6").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an6").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu7").html("<input type='button' value='完成提交' onclick='gethuan7()'>");
+        var aa=1;
+        function gethuan7(){
+            $("#huan7").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu7").html(" ");
+            $("#zi7").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan7").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan7").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei7").text()==1){
+            $("#an7").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei7").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an7").html("<input type='button' value='+'>");
+        }
+        $("#you7").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he7").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe7").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei7").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan7").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu7").html("<input type='button' value='确定'>");
+        if($("#lei7").text()==1){
+            $("#an7").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei7").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an7").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu8").html("<input type='button' value='完成提交' onclick='gethuan8()'>");
+        var aa=1;
+        function gethuan8(){
+            $("#huan8").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu8").html(" ");
+            $("#zi8").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan8").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan8").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei8").text()==1){
+            $("#an8").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei8").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an8").html("<input type='button' value='+'>");
+        }
+        $("#you8").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he8").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe8").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei8").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan8").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu8").html("<input type='button' value='确定'>");
+        if($("#lei8").text()==1){
+            $("#an8").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei8").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an8").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu9").html("<input type='button' value='完成提交' onclick='gethuan9()'>");
+        var aa=1;
+        function gethuan9(){
+            $("#huan9").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu9").html(" ");
+            $("#zi9").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan9").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan9").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei9").text()==1){
+            $("#an9").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei9").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an9").html("<input type='button' value='+'>");
+        }
+        $("#you9").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he9").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe9").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei9").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan9").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu9").html("<input type='button' value='确定'>");
+        if($("#lei9").text()==1){
+            $("#an9").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei9").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an9").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu10").html("<input type='button' value='完成提交' onclick='gethuan10()'>");
+        var aa=1;
+        function gethuan10(){
+            $("#huan10").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu10").html(" ");
+            $("#zi10").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan10").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan10").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei10").text()==1){
+            $("#an10").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei10").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an10").html("<input type='button' value='+'>");
+        }
+        $("#you10").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he10").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe10").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei10").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan10").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu10").html("<input type='button' value='确定'>");
+        if($("#lei10").text()==1){
+            $("#an10").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei10").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an10").html("<input type='button' value='+'>");
+        }
+    }
+    if(bb==1){
+        $("#niu11").html("<input type='button' value='完成提交' onclick='gethuan11()'>");
+        var aa=1;
+        function gethuan11(){
+            $("#huan11").html("<font color='#7fffd4' size='6'>√</font>");
+            $("#niu11").html(" ");
+            $("#zi11").html("<font color='red' size='6'>已完成</font>");
+        }
+        if(aa==1){
+            $("#huan11").html("<font color='red' size='6'>×</font>");
+        }else{
+            $("#huan11").html("<font color='#7fffd4' size='6'>√</font>");
+        }
+        if($("#lei11").text()==1){
+            $("#an11").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei11").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an11").html("<input type='button' value='+'>");
+        }
+        $("#you11").html("<td align='center' width='30%' className=''>优秀<br><b>30分</b></td>");
+        $("#he11").html("<td align='center' width='30%' className=''>合格<br><b>15分</b></td>");
+        $("#buhe11").html("<td align='center' width='30%' className=''>不合格<br><b>0分</b></td>");
+        $("#mei11").html("<td align='center' width='30%' className=''>未完成<br><b>0分</b></td>");
+
+    }else if(bb==2){
+        $("#huan11").html("<input type='text' class='form-control FCount' name='FCount' fcount='' value=''   style='font-size:18px; width:200px;' onfocus='this.select();' placeholder='这周实际完成数量'>");
+        $("#niu11").html("<input type='button' value='确定'>");
+        if($("#lei11").text()==1){
+            $("#an11").html("<font color='#7fffd4' size='4'>ok</font>");
+        }else{
+            $("#wei11").html("<font color='red' size='5'>未写任务报告</font>");
+            $("#an11").html("<input type='button' value='+'>");
+        }
+    }
+</script>
+</html>

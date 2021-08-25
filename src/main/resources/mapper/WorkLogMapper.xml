@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.integral.dao.WorkLogDao">
+    <!--写工作日志-->
+    <insert id="writeWorkLog">
+        insert into worklog_yz values
+        (0,#{number},#{user_id},#{summary},#{plan},sysdate(),#{visible});
+    </insert>
+    <!--写工作日志-全员可见-->
+    <insert id="writeWorkLogAll">
+        insert into worklog_yz values
+        (0,#{number},#{user_id},#{summary},#{plan},sysdate(),null);
+    </insert>
+    <!--查看我的日志-->
+    <select id="lookWorkLog" resultType="com.jk.integral.entity.WorkLogEntity">
+        select * from worklog_yz where user_id=#{user_id}
+    </select>
+    <!--查看全部日志-->
+    <select id="lookWorkLogAll" resultType="com.jk.integral.entity.WorkLogEntity">
+        select * from worklog_yz <include refid="mysql"></include>
+    </select>
+    <sql id="mysql">
+        <where>1=1
+            //时间区间查询
+            <if test="mindate!=null and mindate!=''">
+                and sumdate &lt;= #{mindate}
+            </if>
+            <if test="maxdate!=null and maxdate!=''">
+                and sumdate &gt;= #{maxdate}
+            </if>
+        </where>
+    </sql>
+    <!--动态下拉框-->
+    <select id="lookForHuWorkLog" resultType="com.jk.integral.entity.UserEntity">
+        select * from t_user
+    </select>
+</mapper>

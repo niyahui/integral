@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" th:src="@{/js_nyh/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+    <!-- rel=stylesheet：1. 定义文档与外部资源的关系；2. 是链接样式表。 -->
+    <!-- 所以说，我们用这样的方式，引入外部的css文件时，一定不能忘记rel属性的配置。 -->
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.css}">
+    <script type="text/javascript" th:src="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-table/bootstrap-table.min.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-fileinput/css/fileinput.min.css}">
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-bootbox/bootbox.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/echarts.min.js}"></script>
+
+</head>
+<body>
+<div>
+    <button type="button" class="btn btn-primary"
+            data-toggle="modal" data-target="#addLayer">申请</button>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div id="myTree"></div>
+        </div>
+        <div class="col-md-9">
+            <div id="myTabs" >
+                <!-- 新选项卡 -->
+                <ul class="nav nav-tabs" id="tablist" >
+                    <li role="presentation" class="active"></li>
+                </ul>
+                <!-- 选项卡下内容 -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--记录添加弹出层 -->
+<div class="modal fade" id="addLayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">添加记录</h4>
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-body">
+                <form id="myForm">
+                    积分事项<input type="text" class="form-control" name="apply_headline" id="apply_headline">
+                    奖扣对象<input type="text" class="form-control" name="apply_jiangkou" id="apply_jiangkou">
+                    @审核人<input type="text" class="form-control" name="apply_auditor" id="apply_auditor">
+                    申请内容<input type="text" class="form-control" name="apply_neirong" id="apply_neirong">
+                </form>
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="sub()">确认添加</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $.ajax({
+        url:"leibie",
+        data:{pid:0},
+        dataType:"json",
+        success:function(data){
+            $("#myTree").treeview({
+                data:data,
+                onNodeSelected:function(eval,node){
+                    $.addtabs({iframeHeight:550});
+                    $.addtabs.add({
+                        id:node.id,
+                        title:node.text,
+                        url:node.url
+                    })
+                }
+            })
+        }
+    })
+    function sub() {
+        $.ajax({
+            url:"applyadd",
+            type:"get",
+            data:$("#myForm").serialize(),
+            dataType:"json",
+            success:function(){
+                location.href="Applychenggong.html";
+            },
+            error:function(){
+                location.href="Applychenggong.html";
+            }
+        })
+    }
+</script>
+</html>

@@ -1,0 +1,885 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <link rel="stylesheet" th:href="@{/jiFen/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/jiFen/css/components.css}"/>
+<!--    <link rel="stylesheet" th:href="@{/jiFen/css/fen.css}"/>-->
+    <link rel="stylesheet" th:href="@{/jiFen/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/jiFen/css/layout.css}"/>
+    <link rel="stylesheet" th:href="@{/jiFen/css/plugins.css}"/>
+    <link rel="stylesheet" th:href="@{/jiFen/css/simple-line-icons.min.css}"/>
+    <!--bootstarp 样式-->
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+
+
+</head>
+<style>
+    .col-md-3 {
+        margin-left:0px !important;
+        padding-right:0px !important;
+    }
+    .tiles .tile .tile-body>i {
+        margin-top:-15px !important;
+        font-size:24px !important;
+    }
+    .tiles .tile {
+        padding:0px !important;
+        width:85px !important;
+        height:80px !important;
+    }
+    .tiles .tile .tile-object>.name {
+        margin:0px !important;
+        font-size:12px !important;
+    }
+    .bg-grey div {
+
+    }
+</style>
+<body style="background: #f6fbfc;">
+<!-- BEGIN CONTAINER -->
+<div class="page-padding" style="padding:25px 20px 10px 20px">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="portlet box grey">
+                <div class="portlet-title">
+                    <div class="caption" style="font-size:24px !important">
+                        各挣分通道的管理
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tiles">
+                        <h4>申请类积分 管理</h4>
+                        <div class="tile bg-green itemManage">
+                            <div class="tile-body">
+                                <i class="icon-flag"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name" >
+                                                <!--积分标准制定-->
+                                    <span onclick="IntegralSettingStandard()">积分标准制定</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green fenCheck">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    <!--积分审核-->
+                                    <span onclick="PointsAudit()">积分审核</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green fenApplyForOtherTotal">
+                            <div class="tile-body">
+                                积分查询<br/>(按申请人查)
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green fenCheckQuery">
+                            <div class="tile-body">
+                                积分查询<br/>(按审核人查)
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green fenUncheckQuery">
+                            <div class="tile-body">
+                                积分查询<br/>(查看待审核的)
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green fenCheckFailQuery">
+                            <div class="tile-body">
+                                积分查询<br/>(查看被驳回的)
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>每日任务 管理</h4>
+                        <div class="tile bg-green dailyManage">
+                            <div class="tile-body">
+                                <i class="fa fa-bullseye"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每日任务设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green dailyCheck">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每日任务审核
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green dailyQuery">
+                            <div class="tile-body">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每日任务查询
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>任务大厅 管理</h4>
+                        <div class="tile bg-green eventManage">
+                            <div class="tile-body" style="font-size:18px;">
+                                任务指派与审核
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green eventQuery">
+                            <div class="tile-body">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    指派任务查询
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green toEvent">
+                            <div class="tile-body">
+                                <i class="fa fa-paw"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    问题转任务
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green wordsSet">
+                            <div class="tile-body">
+                                <i class="icon-settings"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    任务设置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <div class="tile bg-green targetDayManage">
+                            <div class="tile-body">
+                                <i class="fa fa-paw"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每日任务设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green targetDayCheck">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每日任务审核
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green targetDayQuery">
+                            <div class="tile-body">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每日任务查询
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <div class="tile bg-green targetWeekManage">
+                            <div class="tile-body">
+                                <i class="fa fa-paw"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每周任务设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green targetWeekCheck">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每周任务审核
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green targetWeekQuery">
+                            <div class="tile-body">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每周任务查询
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <div class="tile bg-green targetMonthManage">
+                            <div class="tile-body">
+                                <i class="fa fa-paw"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每月任务设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green targetMonthCheck">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每月任务审核
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green targetMonthQuery">
+                            <div class="tile-body">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每月任务查询
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>悬赏 管理</h4>
+                        <div class="tile bg-green taskPub">
+                            <div class="tile-body">
+                                <i class="fa fa-gavel"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    发布积分悬赏
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green taskManage">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    积分悬赏管理
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>兼职 管理</h4>
+                        <div class="tile bg-green jobPub">
+                            <div class="tile-body">
+                                <i class="fa fa-puzzle-piece"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    兼职发布
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green jobManage">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    兼职审核
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>考勤 管理</h4>
+                        <div class="tile bg-green workTimeManage">
+                            <div class="tile-body">
+                                <i class="icon-speedometer"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    排班设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green signSetManage">
+                            <div class="tile-body">
+                                <i class="icon-settings"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    考勤分数设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green signChangeManage">
+                            <div class="tile-body">
+                                <i class="icon-wrench"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    考勤调整
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>日志 管理</h4>
+                        <div class="tile bg-green workLogManage">
+                            <div class="tile-body">
+                                <i class="icon-pointer"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    日志点评
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green workLogSet">
+                            <div class="tile-body">
+                                <i class="icon-settings"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    日志分数设置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>学院 管理</h4>
+                        <div class="tile bg-green knowTypeManage">
+                            <div class="tile-body">
+                                <i class="fa fa-book"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    学院设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green knowAdmin">
+                            <div class="tile-body">
+                                <i class="icon-layers"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    工作知识审核
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>制度 管理</h4>
+                        <div class="tile bg-green codexTypeManage">
+                            <div class="tile-body">
+                                <i class="fa fa-book"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    制度类别
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green codexManage">
+                            <div class="tile-body">
+                                <i class="icon-book-open"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    制度管理
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>项目 管理</h4>
+                        <div class="tile bg-green projectManage">
+                            <div class="tile-body">
+                                <i class="fa fa-thumb-tack"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    项目计划
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green projectCheck">
+                            <div class="tile-body">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    项目审核
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>建议 管理</h4>
+                        <div class="tile bg-green suggestManage">
+                            <div class="tile-body">
+                                <i class="glyphicon glyphicon-leaf"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    建议批复
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-green suggestSet">
+                            <div class="tile-body">
+                                <i class="icon-settings"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    建议分设置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>每月基础分 管理</h4>
+                        <div class="tile bg-green fenBaseManage">
+                            <div class="tile-body">
+                                <i class="fa fa-codepen"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    月基础分管理
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="portlet box grey">
+                <div class="portlet-title">
+                    <div class="caption" style="font-size:24px !important">
+                        积分综合管理
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tiles">
+                        <h4>积分查询、统计、撤销</h4>
+                        <div class="tile bg-red everyDayFen">
+                            <div class="tile-body">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    积分查询
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-red fenQuery">
+                            <div class="tile-body">
+                                积分查询<br/>(按奖扣对象查)
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-red reportManage">
+                            <div class="tile-body">
+                                <i class="icon-bar-chart"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    积分统计
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-red fenCancel">
+                            <div class="tile-body">
+                                <i class="fa fa-reply-all"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    积分撤消
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-red import">
+                            <div class="tile-body">
+                                <i class="fa fa-cogs"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    分数导入
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>积分看板管理</h4>
+                        <div class="tile bg-red stageManage">
+                            <div class="tile-body">
+                                <i class="icon-fire"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    积分PK设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-red paramManage">
+                            <div class="tile-body">
+                                <i class="fa fa-empire"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    更多展示设置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="portlet box grey">
+                <div class="portlet-title">
+                    <div class="caption" style="font-size:24px !important">
+                        福利设置
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tiles">
+                        <div class="tile bg-blue welfareSet">
+                            <div class="tile-body">
+                                <i class="fa fa-heart"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    福利设置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>商城管理</h4>
+                        <div class="tile bg-blue productManage">
+                            <div class="tile-body">
+                                <i class="glyphicon glyphicon-th"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    商品管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-blue orderManage">
+                            <div class="tile-body">
+                                <i class="icon-docs"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    订单管理
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <div class="tile bg-blue fenWelfareManage">
+                            <div class="tile-body">
+                                <i class="icon-emoticon-smile"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    总积分福利
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-blue monthWelfareManage">
+                            <div class="tile-body">
+                                <i class="icon-heart"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    每月福利
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-blue positionWelfareManage">
+                            <div class="tile-body">
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    职位福利
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>每日小惊喜</h4>
+                        <div class="tile bg-blue awardManage">
+                            <div class="tile-body">
+                                <i class="icon-present"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    奖品设置
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-blue drawManage">
+                            <div class="tile-body">
+                                <i class="icon-compass"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    中奖列表
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-blue drawSet">
+                            <div class="tile-body">
+                                <i class="icon-settings"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    抽奖设置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>其它</h4>
+                        <div class="tile bg-blue fenAddQuery">
+                            <div class="tile-body">
+                                <i class="fa fa-stack-overflow"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    奖票打印
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-blue wishManage">
+                            <div class="tile-body">
+                                <i class="fa fa-heart"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    许愿管理
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="portlet box grey">
+                <div class="portlet-title">
+                    <div class="caption" style="font-size:24px !important">
+                        系统设置
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tiles">
+                        <h4>人员资料、组织架构</h4>
+                        <div class="tile bg-yellow employeeManage">
+                            <div class="tile-body">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    人员管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow deptManage">
+                            <div class="tile-body">
+                                <i class="fa fa-sitemap"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    部门管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow positionManage">
+                            <div class="tile-body">
+                                <i class="icon-tag"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    职位管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow educationManage">
+                            <div class="tile-body">
+                                <i class="fa fa-mortar-board"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    学历管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow titleManage">
+                            <div class="tile-body">
+                                <i class="fa fa-bookmark"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    职称管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow specManage">
+                            <div class="tile-body">
+                                <i class="fa fa-magic"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    特长管理
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles">
+                        <h4>权限管理</h4>
+                        <div class="tile bg-yellow powerManage">
+                            <div class="tile-body">
+                                <i class="icon-user-following"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    权限管理
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow fenConfig">
+                            <div class="tile-body">
+                                <i class="icon-user-following"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    分数权限配置
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tiles" style="display:none" id="notify">
+                        <h4>文件通知</h4>
+                        <div class="tile bg-yellow notifyEmployees">
+                            <div class="tile-body">
+                                <i class="icon-user-following"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    个人通知
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow notifyDept">
+                            <div class="tile-body">
+                                <i class="icon-user-following"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    部门通知
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile bg-yellow notifyAll">
+                            <div class="tile-body">
+                                <i class="icon-user-following"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    全员通知
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+<script>
+    <!--积分标准制定-->
+    function IntegralSettingStandard(){
+        location.href="hsk/IntegralSettingStandard_Hsk.html";
+    }
+    <!--积分审核-->
+    function PointsAudit(){
+        location.href="hsk/PointsAudit_Hsk.html";
+    }
+
+</script>
+</html>

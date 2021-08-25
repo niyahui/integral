@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+<link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+<script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+<script type="text/javascript" th:src="@{/js/echarts.min.js}"></script>
+<body>
+<table id="myTable"></table>
+</body>
+<script>
+    $("#myTable").bootstrapTable({
+        url:"../yuexiang",
+        columns:[
+            {field:"paiming",title:"排名"},
+            {field:"mingzi",title:"姓名",formatter:function(value){
+                    return "<a href=''>"+value+"</a>";
+                }},
+            {field:"bumen",title:"部门"},
+            {field:"zhiwei",title:"职位"},
+            {field:"ruzhiriqi",title:"入职日期"},
+            {field:"zongjifen",title:"阶段得分"},
+        ],
+        pagination:true,
+        pageSize:5,
+        pageList:[5,10,15,20,25],
+        sidePagination:'client',//分页方式：client 客户端分页，server服务端分页（*
+        striped:true,//斑马线
+    })
+
+</script>
+</html>

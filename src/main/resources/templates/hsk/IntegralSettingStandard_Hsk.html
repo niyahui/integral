@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>积分制定标准</title>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-treeview.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.addtabs.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/js/bootbox.js}"></script>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-treeview.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.addtabs.css}"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap-table.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/js/bootstrap-fileinput/css/fileinput.min.css}">
+    <!--弹窗css-->
+    <link href="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.js"></script>
+</head>
+<body>
+<!--列表查询-->
+<div id="myTable"></div>
+<div id="tb">
+    <!--条件查询-->
+    <input  class="form-control" id="mz" placeholder="检索"/>
+        <input class='btn btn-default' type='button' onclick='sousuo()' value='查询'>
+    <button type="button" class="btn btn-primary"
+            data-toggle="modal" data-target="#addLayer">积分标准-新增</button>
+    <button class="btn btn-info" type="button"
+            data-toggle="modal" data-target="#updateAllLayer">批量修改类别</button>
+        <a class="btn btn-default" href="javascript:exportData()">导出</a>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary"
+                data-toggle="modal" data-target="#classificationOfIntegralStandard" onclick="classificationOfIntegralStandard()">积分类别管理</button>
+        <button type="button" class="btn btn-primary"
+                data-toggle="modal" data-target="#suspendedStandards" onclick="suspendedStandards()">已暂停的标准</button>
+        <button type="button" class="btn btn-primary"
+                data-toggle="modal" data-target="#integralStandardDiagnosis" onclick="integralStandardDiagnosis()">积分标准诊断</button>
+    </div>
+</div>
+<!--添加标准 -->
+<div class="modal fade" id="addLayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">积分标准-新增</h4>
+
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-body">
+                <form id="myForm">
+                    <!--动态下拉类型查询  -->
+                    类别<select id ="addid"class="selectpicker" data-live-search="true" name="integralType"></select><br>
+                    标题<input type="text" class="form-control" name="integralHead">
+                    分数<input type="number" class="form-control" name="integralGrade">
+                    具体要求<input type="text" class="form-control" name="integralRemark">
+                    可见范围<input type="text" class="form-control" name="integralVisualRange" value="全公司人可见">
+                    申请频次<input type="text" class="form-control" name="integralFrequency" value="不限频次">
+                    审核人<input type="text" class="form-control" name="integralAuditor" value="申请是灵活选择审核人">
+
+                </form>
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="subAdd()">确认添加</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<p id="demo"></p>
+<!--回显的弹窗-->
+<!-- 修改 -->
+<div class="modal fade" id="editLayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+
+                <h4 class="modal-title">修改记录</h4>
+
+            </div>
+            <!--===================================================================================  -->
+            <div class="modal-body">
+                <form id="myForm1" class="form-horizontal">
+                    <input type="hidden" id="integralId" class="form-control" name="integralId"> <br>
+                    <!--动态下拉类型查询  -->
+                    类别<select id ="addid1"class="selectpicker" data-live-search="true" name="integralType"></select><br>
+                    标题<input type="text" class="form-control" name="integralHead" id="integralHead">
+                    分数<input type="number" class="form-control" name="integralGrade" id="integralGrade">
+                    具体要求<input type="text" class="form-control" name="integralRemark" id="integralRemark">
+                    可见范围<input type="text" class="form-control" name="integralVisualRange" id="integralVisualRange">
+                    申请频次<input type="text" class="form-control" name="integralFrequency" id="integralFrequency">
+                    审核人<input type="text" class="form-control" name="integralAuditor" id="integralAuditor">
+
+                </form>
+            </div>
+            <!--===================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="updateIntegralSettingStandard()">确认修改</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--批量修改类别 -->
+<div class="modal fade" id="updateAllLayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">批量积分标准类别</h4>
+
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-body">
+                <form id="myForm3">
+                    <!--动态下拉类型查询  -->
+                    类别<select id ="addid3"class="selectpicker" data-live-search="true" name="integralType"></select><br>
+                </form>
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="updateAll()">确认修改</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理--><!--积分类别管理-->
+<div class="modal fade" id="classificationOfIntegralStandard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">积分类别管理</h4>
+
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-body">
+                <div id="myTable1"></div>
+                <div id="tb1">
+                    <!--条件查询-->
+                    <input  class="form-control" id="mz1" placeholder="检索"/>
+                    <input class='btn btn-default' type='button' onclick='sousuo1()' value='查询'>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#youModal">积分标准的类别-增加</button>
+                </div>
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="updateAll()">确认修改</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--积分类别管理-添加-修改 -->
+<div class="modal fade" id="youModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">积分类别管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="youForm">
+                    <input type="hidden" name="typeId" id="typeId">
+                    类别名称<input type="text" class="form-control" name="typeType" id="typeType">
+                    <button type="submit" onclick="addclassificationOfIntegralStandard()" data-dismiss="modal" class="btn btn-success">提交</button>
+                    <button type="reset" class="btn btn-warning">重置</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--/已暂停的标准////////已暂停的标准////////////////////已暂停的标准//////////////////////////已暂停的标准/////////////////////已暂停的标准///////////-->
+<div class="modal fade" id="suspendedStandards" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">积分类别管理</h4>
+
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-body">
+                <div id="myTable2"></div>
+                <div id="tb2">
+                    <!--条件查询-->
+                    <input  class="form-control" id="mz2" placeholder="检索"/>
+                    <input class='btn btn-default' type='button' onclick='sousuo2()' value='查询'>
+                </div>
+            </div>
+            <!--=========================================================================================  -->
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" onclick="updateAll()">确认修改</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+<script>
+    /*页面加载*/
+    $(function(){
+        /*动态查询*/
+        showSel();
+        showSel3();
+    })
+    /*<!--列表查询-->*/
+    $("#myTable").bootstrapTable({
+        url:"../getIntegralSettingStandardList",
+        columns:[
+            {field:"xuan",checkbox:true},
+            {field:"integralId",title:"编号"},
+            {field:"typeType",title:"类别"},
+            {field:"integralHead",title:"标题"},
+            {field:"integralGrade",title:"分数",formatter:function (value, row){
+
+                return value+" 分"
+                }},
+            {field:"integralRemark",title:"详细要求"},
+            {field:"cxz",title:"操作",formatter:function(value,row){
+                    var str='<button class="btn btn-info" onclick="delIntegralSettingStandard('+row.integralId+')">彻底删除</button>';
+                    var str1='<button class="btn btn-success"  data-toggle="modal" data-target="#editLayer" onclick="getIntegralSettingStandardId('+row.integralId+')">编辑</button>';
+                    var str2='<button class="btn btn-info" onclick="suspendIntegralSettingStandard('+row.integralId+')">暂停</button>';
+                    return str+"   "+str1+"   "+str2;
+                }},
+        ],
+        pagination:true,
+        pageSize:5,
+        pageList:[1,3,5,7,9],
+        sidePagination: "client",
+        toolbar:"#tb",
+    })
+    /*<!--条件查询-->*/
+    function sousuo(){
+        $("#myTable").bootstrapTable("refresh", {
+            "query": {
+                integralHead: $("#mz").val(),
+            }
+        });
+    }
+    ///动态回显-增加
+    function showSel(){
+        $.ajax({
+            type : 'get',
+            url:"../getType",
+            dataType : "json",
+            success: function(data) {
+                var opts = "";
+                for( var i = 0 ; i < data.length; i++ ){
+                    //id          类型
+                    opts += "<option value='"+data[i].typeId+"'>"+data[i].typeType+"</option>";
+
+                }
+                // 查询界面
+                $("#addid").html("");
+                $('#addid').append(opts);
+            }
+        });
+    }
+    //积分标准-新增
+    function subAdd(){
+        $.ajax({
+            url:"../addIntegralStandardHsk",
+            type:"post",
+            data:$("#myForm").serialize(),
+            dataType:"json",
+            success:function(){
+                toastr.success("积分标准增加成功了");
+                $('#myTable').bootstrapTable('refresh');//刷新表格
+                $("#addLayer").modal('hide');
+            },error:function(){
+                toastr.success("积分标准增加成功了");
+                $('#myTable').bootstrapTable('refresh');//刷新表格
+                $("#addLayer").modal('hide'); //关闭弹窗
+            }
+        })
+    }
+    /*彻地删除*/
+    function delIntegralSettingStandard(id){
+        var r=confirm("是否确认删除,删除后无法还原?");
+        if (r==true){
+            $.ajax({
+                url:"../delIntegralSettingStandard",
+                data:{id:id},
+                success:function(){
+                    toastr.success("删除成功了");
+                    $("#myTable").bootstrapTable('refresh');
+                },
+                error:function (){
+                    toastr.success("删除成功了");
+                    $("#myTable").bootstrapTable('refresh');
+                }
+            })
+        }
+        else{
+            toastr.success("取消成功了");
+        }
+        document.getElementById("demo").innerHTML=x;
+    }
+    ///动态回显-修改
+    function showSel1(){
+        $.ajax({
+            type : 'get',
+            url:"../getType",
+            dataType : "json",
+            success: function(data) {
+                var opts = "";
+                for( var i = 0 ; i < data.length; i++ ){
+                    //id          类型
+                    opts += "<option value='"+data[i].typeId+"'>"+data[i].typeType+"</option>";
+
+                }
+                // 查询界面
+                $("#addid1").html("");
+                $('#addid1').append(opts);
+            }
+        });
+    }
+    //回显
+    function getIntegralSettingStandardId(id){
+        $.ajax({
+            url:"../getIntegralSettingStandardHui",
+            data:{id:id},
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                if(data.integralType==1){
+                    opts = "<option value='1'>贴心服务</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==2){
+                    opts = "<option value='2'>工作态度</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==3){
+                    opts = "<option value='3'>5S管理类</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==4){
+                    opts = "<option value='4'>质量管理</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==5){
+                    opts += "<option value='5'>管理会议</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==6){
+                    opts += "<option value='6'>精益改善</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==7){
+                    opts += "<option value='7'>店面销售</option>";
+                    $('#addid1').append(opts);
+                }else
+                if(data.integralType==8){
+                    opts += "<option value='8'>业绩相关</option>";
+                    $('#addid1').append(opts);
+                }else{
+                    opts += "<option value='99'>-请选择-</option>";
+                    $('#addid1').append(opts);
+                }
+
+
+
+                $("#integralId").val(data.integralId);
+                $("#integralHead").val(data.integralHead);
+                $("#integralGrade").val(data.integralGrade);
+                $("#integralRemark").val(data.integralRemark);
+                $("#integralFrequency").val(data.integralFrequency);
+                $("#integralAuditor").val(data.integralAuditor);
+                $("#integralVisualRange").val(data.integralVisualRange);
+                showSel1();
+            }
+        })
+    }
+    function updateIntegralSettingStandard(){
+        $.ajax({
+            url:"../updateIntegralSettingStandard",
+            type:"post",
+            data:$("#myForm1").serialize(),
+            dataType:"json",
+            success:function(){
+                toastr.success("修改成功了");
+                $('#myTable').bootstrapTable('refresh');//刷新表格
+                $("#editLayer").modal('hide');
+            },error:function(){
+                toastr.success("修改成功了");
+                $("#myTable").bootstrapTable('refresh');
+                $("#editLayer").modal('hide'); //关闭弹窗
+            }
+        })
+
+    }
+    /*导出积分标准*/
+    function exportData(){
+        location.href="../exportData";
+    }
+    ///动态回显-批量修改
+    function showSel3(){
+        $.ajax({
+            type : 'get',
+            url:"../getType",
+            dataType : "json",
+            success: function(data) {
+                var opts = "";
+                for( var i = 0 ; i < data.length; i++ ){
+                    //id          类型
+                    opts += "<option value='"+data[i].typeId+"'>"+data[i].typeType+"</option>";
+
+                }
+                // 查询界面
+                $("#addid3").html("");
+                $('#addid3').append(opts);
+            }
+        });
+    }
+    //批量修改类别
+    function updateAll(){
+        var addid=$("#addid3").find("option:selected").val()
+        var rows = $( "#myTable" ).bootstrapTable( 'getSelections' );
+        if (rows.length== 0) {
+            toastr.success("请至少选择一行！！");
+            return ;
+        }
+        var ids="";
+        for(var i=0;i<rows.length;i++){
+            ids+=ids==""?rows[i].integralId:","+rows[i].integralId;
+        }
+        $.ajax({
+            url:"../updateAll",
+            data:{ids:ids,addid:addid},
+            success:function(){
+                toastr.success("修改类别成功");
+                $("#updateAllLayer").modal('hide'); //关闭弹窗
+                $("#myTable").bootstrapTable('refresh');
+            }
+        })
+    }
+    /*暂停使用*/
+    function suspendIntegralSettingStandard(id){
+        var r=confirm("是否暂停使用?");
+        if (r==true){
+            $.ajax({
+                url:"../suspendIntegralSettingStandard",
+                data:{id:id},
+                success:function(){
+                    toastr.success("暂停成功了");
+                    $("#myTable").bootstrapTable('refresh');
+                },
+                error:function (){
+                    toastr.success("暂停成功了");
+                    $("#myTable").bootstrapTable('refresh');
+                }
+            })
+        }
+        else{
+            toastr.success("取消成功了");
+        }
+        document.getElementById("demo").innerHTML=x;
+    }
+
+
+
+</script>
+<!--积分类别管理-->
+<script>
+    <!--积分类别管理- 查询-->
+    function classificationOfIntegralStandard(){
+        $("#myTable1").bootstrapTable({
+            url:"../getclassificationOfIntegralStandardList",
+            columns:[
+                {field:"xuan",checkbox:true},
+                {field:"typeType",title:"类别名称",sortable: true,order: "desc"},
+                {field:"cxz",title:"操作",formatter:function(value,row){
+                        var str='<button class="btn btn-info" onclick="deltypeType('+row.typeId+')">删除</button>';
+                        var str1='<button class="btn btn-success"  data-toggle="modal" data-target="#youModal" onclick="gettypeTypeId('+row.typeId+')">编辑</button>';
+                        return str+"    "+str1;
+                    }},
+            ],
+            pagination:true,
+            pageSize:5,
+            pageList:[1,3,5,7,9],
+            sidePagination: "client",
+            toolbar:"#tb1",
+        })
+
+    }
+    /*<!--条件查询-->*/
+    function sousuo1(){
+        $("#myTable1").bootstrapTable("refresh", {
+            "query": {
+                typeType: $("#mz1").val(),
+            }
+        });
+    }
+    /*积分类别管理-增加-修改*/
+    function addclassificationOfIntegralStandard(){
+        $.ajax({
+            url:"../addclassificationOfIntegralStandard",
+            type:"post",
+            data:$("#youForm").serialize(),
+            dataType:"json",
+            success:function(data){
+                toastr.success("成功了");
+                $("#myTable1").bootstrapTable("refresh");//刷新表格
+            },
+            error:function(){
+                toastr.success("成功了");
+                $("#myTable1").bootstrapTable("refresh");//刷新表格
+            }
+        })
+    }
+    /*积分类别管理*/
+    function gettypeTypeId(id){
+        $.ajax({
+            url:"../gettypeTypeId",
+            data:{id:id},
+            success:function(data){
+               $("#typeId").val(data.typeId);
+               $("#typeType").val(data.typeType);
+            },
+            error:function(){
+                $("#typeId").val(data.typeId);
+                $("#typeType").val(data.typeType);
+            }
+        })
+    }
+    /*积分类别管理-删除*/
+    function deltypeType(id){
+        $.ajax({
+            url:"../deltypeType",
+            data:{id:id},
+            success:function(){
+                toastr.success("成功了");
+                $("#myTable1").bootstrapTable('refresh');
+            },
+            error:function (){
+                toastr.success("成功了");
+                $("#myTable1").bootstrapTable('refresh');
+            }
+        })
+    }
+</script>
+<!--已暂停的标准-->
+<script>
+    /*已暂停的标准-查询*/
+    function suspendedStandards(){
+        $("#myTable2").bootstrapTable({
+            url:"../getSuspendedStandardsList",
+            columns:[
+                {field:"xuan",checkbox:true},
+                {field:"integralId",title:"编号"},
+                {field:"typeType",title:"类别"},
+                {field:"integralHead",title:"标题"},
+                {field:"integralGrade",title:"分数",formatter:function (value, row){
+
+                        return value+" 分"
+                    }},
+                {field:"integralRemark",title:"详细要求"},
+                {field:"cxz",title:"操作",formatter:function(value,row){
+                        var str='<button class="btn btn-info" onclick="recovery('+row.integralId+')">恢复</button>';
+                        return str;
+                    }},
+            ],
+            pagination:true,
+            pageSize:5,
+            pageList:[1,3,5,7,9],
+            sidePagination: "client",
+            toolbar:"#tb2",
+        })
+    }
+    /*已暂停的标准-恢复*/
+    function recovery(id){
+        $.ajax({
+            url:"../recovery",
+            data:{id:id},
+            success:function(){
+                toastr.success("成功了");
+                $("#myTable2").bootstrapTable('refresh');
+                $("#myTable").bootstrapTable('refresh');
+            }
+        })
+    }
+</script>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" th:src="@{/js_nyh/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+    <!-- rel=stylesheet：1. 定义文档与外部资源的关系；2. 是链接样式表。 -->
+    <!-- 所以说，我们用这样的方式，引入外部的css文件时，一定不能忘记rel属性的配置。 -->
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-treeview/bootstrap-treeview.min.css}">
+    <script type="text/javascript" th:src="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootStrap-addTabs/bootstrap.addtabs.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-table/bootstrap-table.min.css}">
+
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-fileinput/js/locales/zh.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/js_nyh/bootstrap-fileinput/css/fileinput.min.css}">
+
+    <script type="text/javascript" th:src="@{/js_nyh/bootstrap-bootbox/bootbox.js}"></script>
+    <script type="text/javascript" th:src="@{/js_nyh/echarts.min.js}"></script>
+
+
+</head>
+<body >
+    <div class="panel panel-primary">
+        <center><font size="8" color="red">各销售小组每月积分PK</font></center>
+        <div class="panel-body">
+            <font size="5" color="red">销售三组平均分<span id="pingjun" name="pingjun"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                当前排名：<span id="peiming" name="peiming"></span></font>
+            <table id="mytab1" class="table table-hover" ></table>
+        </div>
+        <div class="panel-body">
+            <font size="5" color="red">销售三组平均分<span id="pingjun1" name="pingjun"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                当前排名：<span id="peiming1" name="peiming"></span></font>
+            <table id="mytab2" class="table table-hover" ></table>
+        </div>
+        <div class="panel-body">
+            <font size="5" color="red">销售三组平均分<span id="pingjun2" name="pingjun"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                当前排名：<span id="peiming2" name="peiming"></span></font>
+            <table id="mytab3" class="table table-hover" ></table>
+        </div>
+    </div>
+
+</body>
+<script>
+    $(function(){
+        zong();
+        zong1();
+        zong2();
+        puanduan();
+    })
+    //查询，分页
+    $('#mytab1').bootstrapTable({
+        method : 'get',
+        url : "jifenpk",
+        columns : [
+            {title : '姓名',field : 'user_name',sortable : true},
+            {title : '积分',field : 'integral',sortable : true},
+        ],
+    })
+    //查询，分页
+    $('#mytab2').bootstrapTable({
+        method : 'get',
+        url : "jifenpk2",
+        columns : [
+            {title : '姓名',field : 'user_name',sortable : true},
+            {title : '积分',field : 'integral',sortable : true},
+        ],
+    })
+    //查询，分页
+    $('#mytab3').bootstrapTable({
+        method : 'get',
+        url : "jifenpk3",
+        columns : [
+            {title : '姓名',field : 'user_name',sortable : true},
+            {title : '积分',field : 'integral',sortable : true},
+        ],
+    })
+
+
+
+    /*平均分*/
+    function zong(){
+        $.ajax({
+            url:"pingjunfen",
+            type:"get",
+            success:function(data){
+                $("#pingjun").html(data);
+            }
+        })
+    }
+
+    /*平均分*/
+    function zong1(){
+        $.ajax({
+            url:"pingjunfen1",
+            type:"get",
+            success:function(data){
+                $("#pingjun1").html(data);
+            }
+        })
+    }
+
+    /*平均分*/
+    function zong2(){
+        $.ajax({
+            url:"pingjunfen2",
+            type:"get",
+            success:function(data){
+                $("#pingjun2").html(data);
+            }
+        })
+    }
+
+function puanduan(){
+    $.ajax({
+        url:"puanduan",
+        type:"get",
+        success:function(data){
+            $("#peiming").html(data);
+        }
+    })
+    $.ajax({
+        url:"puanduan1",
+        type:"get",
+        success:function(data){
+            $("#peiming1").html(data);
+        }
+    })
+    $.ajax({
+        url:"puanduan2",
+        type:"get",
+        success:function(data){
+            $("#peiming2").html(data);
+        }
+    })
+}
+
+
+/*if (ss1<ss && ss1<ss2){
+    $("#peiming1").html("季军");
+}else if (ss1<ss && ss1>ss2){
+    $("#peiming1").html("亚军");
+}else if (ss1<ss2 && ss1>ss){
+    $("#peiming1").html("亚军");
+}else if (ss1>ss && ss1>ss){
+    $("#peiming1").html("冠军");
+}
+    if (ss2<ss && ss2<ss1){
+        $("#peiming2").html("季军");
+    }else if (ss2<ss1 && ss2>ss){
+        $("#peiming2").html("亚军");
+    }else if (ss2<ss1 && ss2>ss){
+        $("#peiming2").html("亚军");
+    }else if (ss2>ss && ss2>ss1){
+        $("#peiming2").html("冠军");
+    }*/
+</script>
+</html>
